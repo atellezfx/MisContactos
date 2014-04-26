@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.acme.miscontactos.R;
@@ -41,5 +42,7 @@ public class ContactListAdapter extends ArrayAdapter<Contacto> {
         textView.setText(actual.getEmail());
         textView = (TextView) view.findViewById(R.id.viewDireccion);
         textView.setText(actual.getDireccion());
+        ImageView ivContactImage = (ImageView) view.findViewById(R.id.ivContactImage);
+        ivContactImage.setImageURI(actual.getImageUri());
     }
 }
