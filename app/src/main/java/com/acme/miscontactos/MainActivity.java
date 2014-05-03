@@ -1,14 +1,16 @@
 package com.acme.miscontactos;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.TabsPagerAdapter;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
-public class MainActivity extends Activity implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper>
+        implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
 
     // Control de fichas (tabs)
     private ViewPager viewPager;
