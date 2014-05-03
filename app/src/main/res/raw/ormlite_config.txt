@@ -1,0 +1,31 @@
+#
+# generated on 2014/05/03 10:35:54
+#
+# --table-start--
+dataClass=com.acme.miscontactos.util.Contacto
+tableName=contacto
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=nombre
+canBeNull=false
+indexName=contacto_nombre_idx
+# --field-end--
+# --field-start--
+fieldName=telefono
+# --field-end--
+# --field-start--
+fieldName=email
+# --field-end--
+# --field-start--
+fieldName=direccion
+# --field-end--
+# --field-start--
+fieldName=imageUri
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

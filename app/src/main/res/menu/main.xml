@@ -3,6 +3,12 @@
     tools:context="com.acme.miscontactos.MainActivity">
 
     <item
+        android:id="@+id/action_eliminar_contacto"
+        android:icon="@drawable/ic_eliminar_contacto"
+        android:title="Eliminar contacto"
+        android:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

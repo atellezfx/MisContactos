@@ -1,6 +1,7 @@
 package com.acme.miscontactos.util;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -25,7 +26,7 @@ public class ContactListAdapter extends ArrayAdapter<Contacto> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if( view == null ) {
+        if (view == null) {
             view = ctx.getLayoutInflater().inflate(R.layout.listview_item, parent, false);
         }
         Contacto actual = this.getItem(position);
@@ -43,6 +44,6 @@ public class ContactListAdapter extends ArrayAdapter<Contacto> {
         textView = (TextView) view.findViewById(R.id.viewDireccion);
         textView.setText(actual.getDireccion());
         ImageView ivContactImage = (ImageView) view.findViewById(R.id.ivContactImage);
-        ivContactImage.setImageURI(actual.getImageUri());
+        ivContactImage.setImageURI(Uri.parse(actual.getImageUri()));
     }
 }

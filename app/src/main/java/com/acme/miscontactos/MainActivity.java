@@ -1,131 +1,78 @@
 package com.acme.miscontactos;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TabHost;
-import android.widget.Toast;
+import android.support.v4.view.ViewPager;
 
-import com.acme.miscontactos.util.ContactListAdapter;
-import com.acme.miscontactos.util.Contacto;
-import com.acme.miscontactos.util.TextChangedListener;
+import com.acme.miscontactos.util.TabsPagerAdapter;
 
-import java.util.ArrayList;
+public class MainActivity extends Activity implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
 
-
-public class MainActivity extends Activity {
-
-    private EditText txtNombre, txtTelefono, txtEmail, txtDireccion;
-    private ArrayAdapter<Contacto> adapter;
-    private ListView contactsListView;
-    private ImageView imgViewContacto;
-    private Button btnAgregar;
-    private int request_code = 1;
+    // Control de fichas (tabs)
+    private ViewPager viewPager;
+    private TabsPagerAdapter adapter;
+    private ActionBar actionBar;
+    // Titulos de las fichas
+    private String[] titulos = {"Crear Contacto", "Lista Contactos"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        inicializarComponentesUI();
-        inicializarListaContactos();
         inicializarTabs();
     }
 
-    private void inicializarListaContactos() {
-        adapter = new ContactListAdapter(this, new ArrayList<Contacto>());
-        contactsListView.setAdapter(adapter);
-    }
-
     private void inicializarTabs() {
-        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
-        tabHost.setup();
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        actionBar = getActionBar();
+        adapter = new TabsPagerAdapter(getFragmentManager());
 
-        TabHost.TabSpec spec = tabHost.newTabSpec("tab1");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Crear");
-        tabHost.addTab(spec);
+        viewPager.setAdapter(adapter);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        spec = tabHost.newTabSpec("tab2");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Lista");
-        tabHost.addTab(spec);
-    }
-
-    private void inicializarComponentesUI() {
-        txtNombre = (EditText) findViewById(R.id.cmpNombre);
-        txtTelefono = (EditText) findViewById(R.id.cmpTelefono);
-        txtEmail = (EditText) findViewById(R.id.cmpEmail);
-        txtDireccion = (EditText) findViewById(R.id.cmpDireccion);
-        contactsListView = (ListView) findViewById(R.id.listView);
-        imgViewContacto = (ImageView) findViewById(R.id.imgViewContacto);
-        txtNombre.addTextChangedListener(new TextChangedListener() {
-            @Override
-            public void onTextChanged(CharSequence seq, int i, int i2, int i3) {
-                btnAgregar = (Button) findViewById(R.id.btnAgregar);
-                btnAgregar.setEnabled(!seq.toString().trim().isEmpty());
-            }
-        });
-    }
-
-    public void onClick(View view) {
-        agregarContacto(
-                txtNombre.getText().toString(),
-                txtTelefono.getText().toString(),
-                txtEmail.getText().toString(),
-                txtDireccion.getText().toString(),
-                (Uri) imgViewContacto.getTag() // Obtenemos el atributo TAG con la Uri de la imagen
-        );
-        String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
-        Toast.makeText(this, mesg, Toast.LENGTH_SHORT).show();
-        btnAgregar.setEnabled(false);
-        limpiarCampos();
-    }
-
-    private void agregarContacto(String nombre, String telefono, String email, String direccion, Uri imageUri) {
-        Contacto nuevo = new Contacto(nombre, telefono, email, direccion, imageUri);
-        adapter.add(nuevo);
-    }
-
-    private void limpiarCampos() {
-        txtNombre.getText().clear();
-        txtTelefono.getText().clear();
-        txtEmail.getText().clear();
-        txtDireccion.getText().clear();
-        // Restablecemos la imagen predeterminada del contacto
-        imgViewContacto.setImageResource(R.drawable.contacto);
-        txtNombre.requestFocus();
-    }
-
-    public void onImgClick(View view) {
-        Intent intent = null;
-        // Verificamos la versión de la plataforma
-        if (Build.VERSION.SDK_INT < 19) {
-            // Android JellyBean 4.3 y anteriores
-            intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-        } else {
-            // Android KitKat 4.4 o superior
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        // Agregando las fichas (tabs)
+        for (String nombre : titulos) {
+            ActionBar.Tab tab = actionBar.newTab().setText(nombre);
+            tab.setTabListener(this);
+            actionBar.addTab(tab);
         }
-        intent.setType("image/*");
-        startActivityForResult(intent, request_code);
+        viewPager.setOnPageChangeListener(this);
+    }
+
+    //<editor-fold desc="METODOS TAB CHANGE LISTENER">
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == request_code) {
-            imgViewContacto.setImageURI(data.getData());
-            // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
-            imgViewContacto.setTag(data.getData());
-        }
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="METODOS VIEW CHANGE LISTENER">
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        actionBar.setSelectedNavigationItem(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+    //</editor-fold>
 }
