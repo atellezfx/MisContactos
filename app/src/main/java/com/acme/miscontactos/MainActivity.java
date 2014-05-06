@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
 
 import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.TabsPagerAdapter;
@@ -14,10 +16,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper>
 
     // Control de fichas (tabs)
     private ViewPager viewPager;
-    private TabsPagerAdapter adapter;
     private ActionBar actionBar;
-    // Titulos de las fichas
-    private String[] titulos = {"Crear Contacto", "Lista Contactos"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,21 +26,29 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper>
     }
 
     private void inicializarTabs() {
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getActionBar();
-        adapter = new TabsPagerAdapter(getFragmentManager());
+        View view = findViewById(R.id.pager); // El mismo id carga el xml de tablet y el de phone
+        String viewTag = String.valueOf(view.getTag());
+        Log.d(getClass().getSimpleName(), String.format("Layout: %s", viewTag));
 
-        viewPager.setAdapter(adapter);
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        if (viewTag.equals("phone")) {
+            viewPager = (ViewPager) findViewById(R.id.pager);
+            actionBar = getActionBar();
+            TabsPagerAdapter adapter = new TabsPagerAdapter(getFragmentManager());
 
-        // Agregando las fichas (tabs)
-        for (String nombre : titulos) {
-            ActionBar.Tab tab = actionBar.newTab().setText(nombre);
-            tab.setTabListener(this);
-            actionBar.addTab(tab);
+            viewPager.setAdapter(adapter);
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+            // Agregando las fichas (tabs)
+            String[] titulos = {"Crear Contacto", "Lista Contactos"};
+            for (String nombre : titulos) {
+                ActionBar.Tab tab = actionBar.newTab().setText(nombre);
+                tab.setTabListener(this);
+                actionBar.addTab(tab);
+            }
+            viewPager.setOnPageChangeListener(this);
         }
-        viewPager.setOnPageChangeListener(this);
+
     }
 
     //<editor-fold desc="METODOS TAB CHANGE LISTENER">
