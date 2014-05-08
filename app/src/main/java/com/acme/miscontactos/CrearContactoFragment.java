@@ -1,8 +1,11 @@
 package com.acme.miscontactos;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -101,11 +104,19 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == request_code) {
-            imgViewContacto.setImageURI(data.getData());
+            Uri uri = data.getData();
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                int takeFlags = data.getFlags() &
+                        (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                ContentResolver resolver = getActivity().getContentResolver();
+                resolver.takePersistableUriPermission(uri, takeFlags);
+            }
+            imgViewContacto.setImageURI(uri);
             // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
-            imgViewContacto.setTag(data.getData());
+            imgViewContacto.setTag(uri);
         }
     }
 }
