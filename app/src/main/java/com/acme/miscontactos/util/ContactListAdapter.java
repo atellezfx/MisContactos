@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.acme.miscontactos.R;
+import com.acme.miscontactos.entity.Contacto;
 
 import java.util.List;
 

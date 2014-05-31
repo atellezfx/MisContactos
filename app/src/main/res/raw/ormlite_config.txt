@@ -2,7 +2,7 @@
 # generated on 2014/05/03 11:10:48
 #
 # --table-start--
-dataClass=com.acme.miscontactos.util.Contacto
+dataClass=com.acme.miscontactos.entity.Contacto
 tableName=contacto
 # --table-fields-start--
 # --field-start--

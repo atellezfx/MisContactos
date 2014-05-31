@@ -6,71 +6,89 @@
     android:layout_height="match_parent"
     tools:context="com.acme.miscontactos.CrearContactoFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Crear Contacto"
-            android:id="@+id/textView"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center_horizontal" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/fondo_contacto">
 
         <ImageView
+            android:id="@+id/imgContacto"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:id="@+id/imgViewContacto"
-            android:layout_gravity="center_horizontal"
+            android:src="@drawable/contacto"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/contacto" />
+            android:background="@color/fondo_gris" />
 
         <EditText
-            android:layout_width="fill_parent"
+            android:id="@+id/cmpNombre"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords|textPersonName"
             android:ems="10"
-            android:id="@+id/cmpNombre"
-            android:hint="Nombre del contacto"
-            android:layout_marginTop="15dp" />
+            android:hint="Nombre"
+            android:layout_below="@+id/imgContacto"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp" />
 
         <EditText
-            android:layout_width="fill_parent"
+            android:id="@+id/cmpTelefono"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
-            android:id="@+id/cmpTelefono"
-            android:hint="Teléfono" />
+            android:hint="Telefono"
+            android:layout_below="@+id/cmpNombre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
 
         <EditText
-            android:layout_width="fill_parent"
+            android:id="@+id/cmpEmail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/cmpEmail"
-            android:hint="Correo electrónico" />
+            android:hint="E-mail"
+            android:layout_below="@+id/cmpTelefono"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp" />
 
         <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:ems="10"
             android:id="@+id/cmpDireccion"
-            android:hint="Dirección" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:hint="Dirección"
+            android:layout_below="@+id/cmpEmail"
+            android:minLines="2"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCancelar"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Agregar Contacto"
-            android:id="@+id/btnAgregar"
-            android:enabled="false"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center_horizontal" />
-    </LinearLayout>
+            android:text="Cancelar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/cmpDireccion"
+            android:layout_marginTop="25dp" />
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_below="@+id/cmpDireccion"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="25dp" />
+
+    </RelativeLayout>
 
 </ScrollView>

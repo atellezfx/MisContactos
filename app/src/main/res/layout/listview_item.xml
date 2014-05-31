@@ -3,14 +3,14 @@
 <com.acme.miscontactos.util.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="115dp"
+    android:background="@drawable/fondo_contacto">
 
     <ImageView
-        android:layout_width="92dp"
-        android:layout_height="92dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
         android:id="@+id/ivContactImage"
         android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
         android:src="@drawable/contacto"
         android:focusable="false" />
 
@@ -26,7 +26,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Nombre del Contacto"
+            android:text="Nombre"
             android:id="@+id/viewNombre"
             android:focusable="false" />
 

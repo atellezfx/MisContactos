@@ -1,4 +1,4 @@
-package com.acme.miscontactos.util;
+package com.acme.miscontactos.entity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
