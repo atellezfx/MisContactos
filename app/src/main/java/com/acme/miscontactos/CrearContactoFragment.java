@@ -93,7 +93,9 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
                 txtTelefono.getText().toString(),
                 txtEmail.getText().toString(),
                 txtDireccion.getText().toString(),
-                String.valueOf(imgViewContacto.getTag()) // Obtenemos el atributo TAG con la Uri de la imagen
+                // String.valueOf(null) regresa "null" en vez de null
+                imgViewContacto.getTag() != null ? String.valueOf(imgViewContacto.getTag()) : null
+                // Obtenemos el atributo TAG con la Uri de la imagen
         );
         String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
         Toast.makeText(view.getContext(), mesg, Toast.LENGTH_SHORT).show();

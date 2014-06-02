@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.acme.miscontactos.util.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="115dp"
-    android:background="@drawable/fondo_contacto">
+    android:background="@drawable/fondo_contacto"
+    tools:context="com.acme.miscontactos.ContactoFragment">
 
     <ImageView
         android:layout_width="96dp"
@@ -68,4 +70,4 @@
         android:clickable="false"
         android:focusable="false" />
 
-</com.acme.miscontactos.util.CheckableRelativeLayout>
+</RelativeLayout>

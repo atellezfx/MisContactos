@@ -3,20 +3,18 @@ package com.acme.miscontactos;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
-import com.acme.miscontactos.util.ContactListAdapter;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
@@ -24,17 +22,18 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.acme.miscontactos.ContactoFragment.FragmentCheckedListener;
 import static com.acme.miscontactos.util.MenuBarActionReceiver.MenuBarActionListener;
 
 /**
  * Created by alejandro on 5/2/14.
  */
-public class ListaContactosFragment extends Fragment implements MenuBarActionListener {
+public class ListaContactosFragment extends Fragment implements MenuBarActionListener, FragmentCheckedListener {
 
-    private ArrayAdapter<Contacto> adapter;
     private MenuBarActionReceiver receiver;
-    private ListView contactsListView;
+    private List<ContactoFragment> fragmentosSeleccionados = new ArrayList<ContactoFragment>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,17 +58,19 @@ public class ListaContactosFragment extends Fragment implements MenuBarActionLis
     }
 
     private void inicializarComponentes(View view) {
-        contactsListView = (ListView) view.findViewById(R.id.listView);
-        adapter = new ContactListAdapter(getActivity(), new ArrayList<Contacto>());
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
         OrmLiteBaseActivity<DatabaseHelper> activity = getOrmLiteBaseActivity();
         if (activity != null) {
             DatabaseHelper helper = activity.getHelper();
             RuntimeExceptionDao<Contacto, Integer> dao = helper.getContactoRuntimeDAO();
-            adapter.addAll(dao.queryForAll());
+            List<Contacto> contactos = dao.queryForAll();
+            for (Contacto contacto : contactos) {
+                ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
+                transaction.add(R.id.lista_fragmentos_contacto, cfrag);
+            }
         }
-        // Se configura para que el adapter nofique cambios en el dataset automáticamente
-        adapter.setNotifyOnChange(true);
-        contactsListView.setAdapter(adapter);
+        transaction.commit();
     }
 
     private OrmLiteBaseActivity<DatabaseHelper> getOrmLiteBaseActivity() {
@@ -88,20 +89,19 @@ public class ListaContactosFragment extends Fragment implements MenuBarActionLis
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                SparseBooleanArray array = contactsListView.getCheckedItemPositions();
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
                 ArrayList<Contacto> seleccion = new ArrayList<Contacto>();
-                for (int j = 0; j < array.size(); j++) {
-                    // Posición del contacto en el adaptador
-                    int posicion = array.keyAt(j);
-                    if (array.valueAt(j)) seleccion.add(adapter.getItem(posicion));
+                for (ContactoFragment cfrag : fragmentosSeleccionados) {
+                    seleccion.add(cfrag.getContactoActual());
+                    transaction.remove(cfrag);
                 }
-                // Segundo for para eliminar los contactos del adapter y no perder los ínidces en el for anterior
-                for (Contacto con : seleccion) adapter.remove(con);
+                fragmentosSeleccionados.clear();
+                transaction.commit();
                 Intent intent = new Intent("listacontactos");
                 intent.putExtra("operacion", ContactReceiver.CONTACTO_ELIMINADO);
                 intent.putExtra("datos", seleccion);
                 getActivity().sendBroadcast(intent);
-                contactsListView.clearChoices();
             }
         });
         builder.setNegativeButton("NO", null);
@@ -110,6 +110,13 @@ public class ListaContactosFragment extends Fragment implements MenuBarActionLis
 
     @Override
     public void sincronizarDatos() {
+        // TODO: Implementar sincronización de datos
         Toast.makeText(getActivity(), "Sincronizar Datos", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void fragmentChecked(ContactoFragment cfrag, boolean isChecked) {
+        if (isChecked) fragmentosSeleccionados.add(cfrag);
+        else fragmentosSeleccionados.remove(cfrag);
     }
 }
