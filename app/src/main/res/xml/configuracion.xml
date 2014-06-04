@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Datos de Usuario">
+    <PreferenceCategory android:title="Datos de usuario">
         <EditTextPreference
             android:key="username"
             android:title="Nombre de usuario"
-            android:summary="Usuario para la sincronización de contactos"
+            android:summary="Usuario para la sincronización de datos"
             android:defaultValue="" />
     </PreferenceCategory>
 </PreferenceScreen>
