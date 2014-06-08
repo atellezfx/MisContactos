@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pager"
+    android:id="@+id/rootPane"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:tag="tablet">
@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         tools:layout="@layout/fragment_crear_contacto"
-        android:layout_alignParentBottom="true" />
+        android:layout_above="@+id/barraMenu" />
 
     <fragment
         android:layout_width="match_parent"
@@ -23,6 +23,77 @@
         android:id="@+id/fragment2"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/fragment"
-        tools:layout="@layout/fragment_lista_contactos" />
+        tools:layout="@layout/fragment_lista_contactos"
+        android:layout_above="@+id/barraMenu" />
+
+    <GridLayout
+        android:id="@+id/barraMenu"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/ab_solid_agenda"
+        android:columnCount="5"
+        android:rowCount="1"
+        android:paddingTop="4dp">
+
+        <GridLayout
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:rowCount="1"
+            android:clickable="true">
+
+            <ImageButton
+                android:id="@+id/btn_eliminar_contactos"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_discard"
+                android:scaleType="fitCenter"
+                android:background="@drawable/ab_solid_agenda" />
+
+            <TextView
+                android:text="@string/label_btn_remove_contact"
+                android:layout_height="match_parent"
+                android:textAlignment="gravity"
+                android:textColor="@color/entintado_claro"
+                android:gravity="center_vertical"
+                android:textSize="24sp" />
+
+        </GridLayout>
+
+        <GridLayout
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:rowCount="1"
+            android:clickable="true">
+
+            <ImageButton
+                android:id="@+id/btn_sincronizar"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_refresh"
+                android:scaleType="fitCenter"
+                android:background="@drawable/ab_solid_agenda" />
+
+            <TextView
+                android:text="@string/label_btn_sync_contacts"
+                android:layout_height="match_parent"
+                android:textAlignment="gravity"
+                android:textColor="@color/entintado_claro"
+                android:gravity="center_vertical"
+                android:textSize="24sp" />
+
+        </GridLayout>
+
+        <ImageButton
+            android:id="@+id/btn_crear_contacto"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/btn_lista_contactos"
+            android:visibility="invisible" />
+
+    </GridLayout>
 
 </RelativeLayout>

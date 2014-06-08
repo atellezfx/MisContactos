@@ -80,6 +80,15 @@ public class ListaContactosFragment extends Fragment
     }
 
     @Override
+    public void contactoAgregado(Contacto contacto) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
+        transaction.add(R.id.lista_fragmentos_contacto, cfrag);
+        transaction.commit();
+    }
+
+    @Override
     public void eliminarContactos() {
         String mensaje = "¿Está seguro de eliminar los contactos seleccionados?";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

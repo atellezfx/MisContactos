@@ -43,4 +43,8 @@
     <!--Recursos para el Widget Contador de Contactos-->
     <string name="widget_simple_titulo">Contactos en Agenda</string>
 
+    <!--Recursos para la barra de menú en layout de tablet-->
+    <string name="label_btn_remove_contact">Eliminar</string>
+    <string name="label_btn_sync_contacts">Sincronizar</string>
+
 </resources>

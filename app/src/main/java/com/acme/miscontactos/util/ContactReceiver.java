@@ -62,6 +62,14 @@ public class ContactReceiver extends BroadcastReceiver {
         Uri insertedUri = resolver.insert(ContactoContract.CONTENT_URI, values);
         // Obtenemos el id del nuevo registro insertado
         contacto.setId(Integer.parseInt(insertedUri.getLastPathSegment()));
+
+        // Notificar al BroadcastReceiver de MenuBarActionReceiver para que ListaContactosFragment,
+        // reciba la notificación de que un contacto ha sido almacenado en la base de datos.
+        Intent mbintent = new Intent(MenuBarActionReceiver.FILTER_NAME);
+        mbintent.putExtra("operacion", MenuBarActionReceiver.ACCION_CONTACTO_AGREGADO);
+        mbintent.putExtra("datos", contacto);
+        context.sendBroadcast(mbintent);
+
         notificarWidgetPorDatosModificados();
         tracker.recordCreateOp(contacto);
     }

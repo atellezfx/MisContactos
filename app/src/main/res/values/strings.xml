@@ -44,4 +44,8 @@
     <!--Recursos para el Widget Contador de Contactos-->
     <string name="widget_simple_titulo">Contacts Stored</string>
 
+    <!--Recursos para la barra de menú en layout de tablet-->
+    <string name="label_btn_remove_contact">Remove</string>
+    <string name="label_btn_sync_contacts">Synchronize</string>
+
 </resources>
