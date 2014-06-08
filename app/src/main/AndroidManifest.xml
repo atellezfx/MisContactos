@@ -12,17 +12,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-            <intent-filter>
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ConfiguracionActivity"
             android:label="@string/action_settings" />
@@ -41,11 +39,20 @@
             android:enabled="true" />
 
         <provider
-            android:authorities="com.acme.miscontactos"
             android:name=".entity.ContactoProvider"
-            android:exported="false"
-            android:enabled="true" />
+            android:authorities="com.acme.miscontactos"
+            android:enabled="true"
+            android:exported="false" />
 
+        <receiver android:name=".widgets.ContadorContactosWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/contador_contactos_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

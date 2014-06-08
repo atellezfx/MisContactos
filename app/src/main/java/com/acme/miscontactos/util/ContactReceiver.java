@@ -1,7 +1,9 @@
 package com.acme.miscontactos.util;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -13,8 +15,10 @@ import android.util.Log;
 
 import com.acme.miscontactos.entity.Contacto;
 import com.acme.miscontactos.entity.ContactoContract;
+import com.acme.miscontactos.widgets.ContadorContactosWidget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by alejandro on 5/2/14.
@@ -58,6 +62,7 @@ public class ContactReceiver extends BroadcastReceiver {
         Uri insertedUri = resolver.insert(ContactoContract.CONTENT_URI, values);
         // Obtenemos el id del nuevo registro insertado
         contacto.setId(Integer.parseInt(insertedUri.getLastPathSegment()));
+        notificarWidgetPorDatosModificados();
         tracker.recordCreateOp(contacto);
     }
 
@@ -72,6 +77,17 @@ public class ContactReceiver extends BroadcastReceiver {
             tracker.recordDeleteOp(contacto);
             cursor.close();
         }
+        notificarWidgetPorDatosModificados();
+    }
+
+    private void notificarWidgetPorDatosModificados() {
+        ComponentName cname = new ComponentName(context, ContadorContactosWidget.class);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
+        // Obtenemos los IDs de nuestro widget, ya que puede haber mas de una instancia en pantallas
+        int[] widgetIds = manager.getAppWidgetIds(cname);
+        // TODO: Eliminar este Log al terminar fase de desarrollo
+        Log.d("Widgets IDs:", Arrays.toString(widgetIds));
+        ContadorContactosWidget.updateAppWidget(context, manager, widgetIds);
     }
 
     private void actualizarContacto(Intent intent) {

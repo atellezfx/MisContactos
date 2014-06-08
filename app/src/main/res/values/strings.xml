@@ -3,7 +3,6 @@
 
     <string name="app_name">Contacts</string>
     <string name="action_settings">Settings</string>
-
     <string name="hint_cmpnombre">Name</string>
     <string name="hint_cmptelefono">Phone</string>
     <string name="hint_cmpemail">E-mail</string>
@@ -12,24 +11,24 @@
     <string name="text_btnguardar">Save</string>
     <string name="mesg_preferences_saved">Saved data for user \'%s\'</string>
 
-    <!--Recursos CrearContactoFragment.java -->
+    <!-- Recursos CrearContactoFragment.java -->
     <string name="title_alertdialog_error">Error</string>
     <string name="mesg_alertdialog_error">No preferences configured</string>
     <string name="mesg_toast_contact_added">%s has beed added to the list!</string>
 
-    <!--Recursos ListaContactosFragment.java-->
+    <!-- Recursos ListaContactosFragment.java -->
     <string name="mesg_confirm_delete">Are you sure you want to remove selected contacts?</string>
     <string name="title_alertdialog_confirm">Confirm Selection</string>
     <string name="mesg_positive_dialog_option">YES</string>
     <string name="mesg_negative_dialog_option">NO</string>
     <string name="mesg_toast_sync_confirm">%s synchronized</string>
 
-    <!--Recursos para HttpServiceBroker.java-->
+    <!-- Recursos para HttpServiceBroker.java -->
     <string name="mesg_wifi_not_available">No WiFi available</string>
-    <!--Recursos para Http????Service.java-->
+    <!-- Recursos para Http????Service.java -->
     <string name="mesg_service_sync">Synchronizing data %s...</string>
 
-    <!--Recursos Panel Configuración-->
+    <!-- Recursos Panel Configuración -->
     <string name="title_settings_menu_item">Settings</string>
     <string name="title_config_username">Username</string>
     <string name="summary_config_username">Username for data syncronization</string>
@@ -39,5 +38,10 @@
     <string name="summary_config_server">Name or server address</string>
     <string name="title_config_port">Port</string>
     <string name="summary_config_port">Communitacions Port</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <!--Recursos para el Widget Contador de Contactos-->
+    <string name="widget_simple_titulo">Contacts Stored</string>
 
 </resources>

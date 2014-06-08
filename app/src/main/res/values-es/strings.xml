@@ -40,4 +40,7 @@
     <string name="title_config_port">Puerto</string>
     <string name="summary_config_port">Puerto de comunicación</string>
 
+    <!--Recursos para el Widget Contador de Contactos-->
+    <string name="widget_simple_titulo">Contactos en Agenda</string>
+
 </resources>
