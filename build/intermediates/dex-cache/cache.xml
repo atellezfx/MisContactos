@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-android-4.48-1dca8f17e4046ac9342f93324cbc9973ce8f95bb.jar"
+        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/ormlite-android-4.48.jar"
+        jumboMode="false" revision="19.1.0" sha1="9e45246f4a068cad94e03f34bf8f24358279a7f7" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-databind-2.4.0-510543f09233f56c281a56b2c5ee69e33df27445.jar"
+        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-databind-2.4.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="473e063d6396a1ff6e4b9c7943e604291ce18b07" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.4.0-07bbcb4a49b3b00816895b82b3fdc11dbc3ff164.jar"
+        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-annotations-2.4.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-core-4.48-42c0d0984bbe6968803589d548c4402dd22339c6.jar"
+        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/ormlite-core-4.48.jar"
+        jumboMode="false" revision="19.1.0" sha1="00b3081e1074bf380cc1d09d6ef4f8e5415311f2" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/guava-16.0.1-25473c5ce9cee101d9aa76727c70f01c9d9a61f2.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5/guava-16.0.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-core-2.4.0-a33967c64b9f4561d45e27e69c215f8b25d3dc60.jar"
+        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-core-2.4.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="1e33fd4cca6c4a9bf3d2f638cabb504a5b5c989d" />
+
+</pre-dex-items>

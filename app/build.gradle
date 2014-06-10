@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    buildToolsVersion '19.1.0'
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
@@ -28,4 +28,7 @@ dependencies {
     compile files('libs/ormlite-core-4.48.jar')
     compile files('libs/ormlite-android-4.48.jar')
     compile 'com.google.guava:guava:16.0.+'
+    compile files('libs/jackson-core-2.4.0.jar')
+    compile files('libs/jackson-annotations-2.4.0.jar')
+    compile files('libs/jackson-databind-2.4.0.jar')
 }
