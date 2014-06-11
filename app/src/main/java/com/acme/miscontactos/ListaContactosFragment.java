@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
+import com.acme.miscontactos.net.HttpDispatcher;
+import com.acme.miscontactos.util.AsyncTaskListener;
 import com.acme.miscontactos.util.ContactReceiver;
+import com.acme.miscontactos.util.DataChangeTracker;
 import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -25,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.acme.miscontactos.ContactoFragment.FragmentCheckedListener;
+import static com.acme.miscontactos.util.DataChangeTracker.StoredRecord;
 import static com.acme.miscontactos.util.MenuBarActionReceiver.MenuBarActionListener;
 
 /**
  * Created by alejandro on 5/2/14.
  */
-public class ListaContactosFragment extends Fragment implements MenuBarActionListener, FragmentCheckedListener {
+public class ListaContactosFragment extends Fragment
+        implements MenuBarActionListener, FragmentCheckedListener, AsyncTaskListener<List<String>> {
 
     private MenuBarActionReceiver receiver;
     private List<ContactoFragment> fragmentosSeleccionados = new ArrayList<ContactoFragment>();
@@ -98,7 +103,7 @@ public class ListaContactosFragment extends Fragment implements MenuBarActionLis
                 }
                 fragmentosSeleccionados.clear();
                 transaction.commit();
-                Intent intent = new Intent("listacontactos");
+                Intent intent = new Intent(ContactReceiver.FILTER_NAME);
                 intent.putExtra("operacion", ContactReceiver.CONTACTO_ELIMINADO);
                 intent.putExtra("datos", seleccion);
                 getActivity().sendBroadcast(intent);
@@ -110,13 +115,36 @@ public class ListaContactosFragment extends Fragment implements MenuBarActionLis
 
     @Override
     public void sincronizarDatos() {
-        // TODO: Implementar sincronización de datos
-        Toast.makeText(getActivity(), "Sincronizar Datos", Toast.LENGTH_SHORT).show();
+        HttpDispatcher dispatcher = new HttpDispatcher(getActivity());
+        DataChangeTracker tracker = new DataChangeTracker(getActivity());
+        ArrayList<StoredRecord> cambios = tracker.retrieveRecords();
+        for (StoredRecord record : cambios) {
+            switch (record.getType()) {
+                case StoredRecord.TYPE_CREATE:
+                    dispatcher.doPost(record.getData(), this);
+                    break;
+                case StoredRecord.TYPE_DELETE:
+                    dispatcher.doDelete(record.getData(), this);
+                    break;
+                case StoredRecord.TYPE_UPDATE:
+                    dispatcher.doPut(record.getData(), this);
+                    break;
+            }
+        }
+        tracker.clearRecords();
+        //TODO: Reemplazar botón de sincronización por un progress bar
     }
 
     @Override
     public void fragmentChecked(ContactoFragment cfrag, boolean isChecked) {
         if (isChecked) fragmentosSeleccionados.add(cfrag);
         else fragmentosSeleccionados.remove(cfrag);
+    }
+
+    @Override
+    public void processResult(List<String> result) {
+        for (String cad : result)
+            Toast.makeText(getActivity(), String.format("Sincronizado %s", cad),
+                    Toast.LENGTH_SHORT).show();
     }
 }
