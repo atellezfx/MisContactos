@@ -44,7 +44,9 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/owner/").append(REGISTRY_OWNER).toString();
         if (wifiEnabled()) {
-            // TODO: Implemenar HttpGetWorker
+            HttpGetWorker<T> worker = new HttpGetWorker<T>(mapper, resultType);
+            worker.addAsyncTaskListener(listener);
+            worker.execute(url);
         } else {
             Toast.makeText(context, "WiFi no disponible", Toast.LENGTH_SHORT).show();
         }
@@ -54,7 +56,9 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.toString();
         if (wifiEnabled()) {
-            // TODO: Implemenar HttpPostWorker
+            HttpPostWorker worker = new HttpPostWorker(mapper, url);
+            worker.addAsyncTaskListener(listener);
+            worker.execute(bean);
         } else {
             Toast.makeText(context, "WiFi no disponible", Toast.LENGTH_SHORT).show();
         }
@@ -64,7 +68,9 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/").append(bean.getServerId()).toString();
         if (wifiEnabled()) {
-            // TODO: Implemenar HttpPutWorker
+            HttpPutWorker worker = new HttpPutWorker(mapper, url);
+            worker.addAsyncTaskListener(listener);
+            worker.execute(bean);
         } else {
             Toast.makeText(context, "WiFi no disponible", Toast.LENGTH_SHORT).show();
         }
@@ -74,7 +80,9 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/").append(bean.getServerId()).toString();
         if (wifiEnabled()) {
-            // TODO: Implemenar HttpDeleteWorker
+            HttpDeleteWorker worker = new HttpDeleteWorker(mapper);
+            worker.addAsyncTaskListener(listener);
+            worker.execute(url);
         } else {
             Toast.makeText(context, "WiFi no disponible", Toast.LENGTH_SHORT).show();
         }
