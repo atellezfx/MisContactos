@@ -2,12 +2,15 @@ package com.acme.miscontactos;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +91,7 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
     }
 
     private void guardarContacto(View view) {
-        agregarContacto(
+        boolean result = agregarContacto(
                 txtNombre.getText().toString(),
                 txtTelefono.getText().toString(),
                 txtEmail.getText().toString(),
@@ -97,18 +100,32 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
                 imgViewContacto.getTag() != null ? String.valueOf(imgViewContacto.getTag()) : null
                 // Obtenemos el atributo TAG con la Uri de la imagen
         );
-        String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
-        Toast.makeText(view.getContext(), mesg, Toast.LENGTH_SHORT).show();
-        btnGuardar.setEnabled(false);
-        limpiarCampos();
+        if (result) {
+            String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
+            Toast.makeText(view.getContext(), mesg, Toast.LENGTH_SHORT).show();
+            btnGuardar.setEnabled(false);
+            limpiarCampos();
+        } else {
+            AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+            alert.setTitle("Error");
+            alert.setMessage("No se ha definido el usuario en las preferencias");
+            alert.setPositiveButton("OK", null);
+            alert.show();
+        }
     }
 
-    private void agregarContacto(String nombre, String telefono, String email, String direccion, String imageUri) {
-        Contacto nuevo = new Contacto(nombre, telefono, email, direccion, imageUri);
-        Intent intent = new Intent(ContactReceiver.FILTER_NAME);
-        intent.putExtra("operacion", ContactReceiver.CONTACTO_AGREGADO);
-        intent.putExtra("datos", nuevo);
-        getActivity().sendBroadcast(intent);
+    private boolean agregarContacto(String nombre, String telefono, String email, String direccion, String imageUri) {
+        SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String usuario = shp.getString("username", null);
+        if (usuario != null) {
+            Contacto nuevo = new Contacto(nombre, telefono, email, direccion, imageUri, usuario);
+            Intent intent = new Intent(ContactReceiver.FILTER_NAME);
+            intent.putExtra("operacion", ContactReceiver.CONTACTO_AGREGADO);
+            intent.putExtra("datos", nuevo);
+            getActivity().sendBroadcast(intent);
+            return true;
+        }
+        return false;
     }
 
     private void limpiarCampos() {

@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.io.Serializable;
-
 @DatabaseTable(tableName = "contacto")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Contacto extends JSONBean implements Serializable {
+public class Contacto extends JSONBean {
 
     @JsonProperty
+    @DatabaseField
     private int serverId;
 
     @JsonProperty("androidId")
@@ -51,6 +50,16 @@ public class Contacto extends JSONBean implements Serializable {
 
     public Contacto(int id, String nombre, String telefono, String email, String direccion, String imageUri, String propietario) {
         this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.email = email;
+        this.direccion = direccion;
+        this.imageUri = imageUri;
+        this.propietario = propietario;
+        procesarHashMD5();
+    }
+
+    public Contacto(String nombre, String telefono, String email, String direccion, String imageUri, String propietario) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;

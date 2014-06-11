@@ -13,5 +13,11 @@
             android:title="Servidor"
             android:summary="Nombre o dirección del servidor"
             android:defaultValue="" />
+        <EditTextPreference
+            android:key="server_port"
+            android:inputType="number"
+            android:title="Puerto"
+            android:summary="Puerto de comunicación"
+            android:defaultValue="8084" />
     </PreferenceCategory>
 </PreferenceScreen>

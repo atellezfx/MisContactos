@@ -10,11 +10,12 @@ import com.j256.ormlite.field.DatabaseField;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 /**
  * Created by alejandro on 05/06/14.
  */
-public abstract class JSONBean implements PropertyChangeListener {
+public abstract class JSONBean implements PropertyChangeListener, Serializable {
 
     /**
      * Propiedad para identificar cambios en el bean, para proceder a la sincronización

@@ -142,7 +142,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         if (requestCode == CONFIG_REQUEST_CODE) {
             SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(this);
             String username = shp.getString("username", null);
-            String mesg = String.format("Datos del usuario '%s' han sido guardados", username);
+            String mesg = String.format("Datos del usuario '%s' guardados", username);
             Toast.makeText(this, mesg, Toast.LENGTH_SHORT).show();
         }
     }
