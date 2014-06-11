@@ -1,5 +1,7 @@
 package com.acme.miscontactos.net;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,10 +24,12 @@ import java.util.List;
  */
 public class HttpDeleteWorker extends AsyncTask<String, Void, List<String>> {
 
+    private final ProgressDialog dialogo;
     private HashSet<AsyncTaskListener<List<String>>> listeners;
     private final ObjectMapper mapper;
 
-    public HttpDeleteWorker(ObjectMapper mapper) {
+    public HttpDeleteWorker(ObjectMapper mapper, Context context) {
+        dialogo = new ProgressDialog(context);
         this.mapper = mapper;
     }
 
@@ -37,10 +41,18 @@ public class HttpDeleteWorker extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
+    protected void onPreExecute() {
+        dialogo.setTitle("Tarea Eliminación");
+        dialogo.setMessage("Sincronizando datos...");
+        dialogo.show();
+    }
+
+    @Override
     protected void onPostExecute(List<String> result) {
         for (AsyncTaskListener<List<String>> listener : listeners) {
             listener.processResult(result);
         }
+        if (dialogo.isShowing()) dialogo.dismiss();
     }
 
     public void addAsyncTaskListener(AsyncTaskListener<List<String>> listener) {

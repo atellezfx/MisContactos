@@ -1,10 +1,13 @@
 #
-# generated on 2014/05/03 11:10:48
+# generated on 2014/06/10 10:18:09
 #
 # --table-start--
 dataClass=com.acme.miscontactos.entity.Contacto
 tableName=contacto
 # --table-fields-start--
+# --field-start--
+fieldName=serverId
+# --field-end--
 # --field-start--
 fieldName=id
 generatedId=true
@@ -25,6 +28,22 @@ fieldName=direccion
 # --field-end--
 # --field-start--
 fieldName=imageUri
+# --field-end--
+# --field-start--
+fieldName=propietario
+# --field-end--
+# --field-start--
+fieldName=md5
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.acme.miscontactos.entity.JSONBean
+tableName=jsonbean
+# --table-fields-start--
+# --field-start--
+fieldName=md5
 # --field-end--
 # --table-fields-end--
 # --table-end--

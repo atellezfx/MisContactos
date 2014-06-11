@@ -1,5 +1,7 @@
 package com.acme.miscontactos.net;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,11 +27,13 @@ import java.util.List;
  */
 public class HttpPutWorker extends AsyncTask<JSONBean, Void, List<String>> {
 
+    private final ProgressDialog dialogo;
     private HashSet<AsyncTaskListener<List<String>>> listeners;
     private final ObjectMapper mapper;
     private final String url;
 
-    public HttpPutWorker(ObjectMapper mapper, String url) {
+    public HttpPutWorker(ObjectMapper mapper, String url, Context context) {
+        dialogo = new ProgressDialog(context); // Debe utilizar un contexto de un Activity, no de aplicación
         this.mapper = mapper;
         this.url = url;
     }
@@ -42,10 +46,18 @@ public class HttpPutWorker extends AsyncTask<JSONBean, Void, List<String>> {
     }
 
     @Override
+    protected void onPreExecute() {
+        dialogo.setTitle("Tarea Actualización");
+        dialogo.setMessage("Actualizando datos del servidor...");
+        dialogo.show();
+    }
+
+    @Override
     protected void onPostExecute(List<String> result) {
         for (AsyncTaskListener<List<String>> listener : listeners) {
             listener.processResult(result);
         }
+        if (dialogo.isShowing()) dialogo.dismiss();
     }
 
     public void addAsyncTaskListener(AsyncTaskListener<List<String>> listener) {

@@ -1,5 +1,6 @@
 package com.acme.miscontactos.net;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -29,11 +30,13 @@ import java.util.List;
  */
 public class HttpPostWorker extends AsyncTask<JSONBean, Void, List<String>> {
 
+    private final ProgressDialog dialogo;
     private HashSet<AsyncTaskListener<List<String>>> listeners;
     private final ObjectMapper mapper;
     private final String url;
 
-    public HttpPostWorker(ObjectMapper mapper, String url) {
+    public HttpPostWorker(ObjectMapper mapper, String url, Context context) {
+        dialogo = new ProgressDialog(context);
         this.mapper = mapper;
         this.url = url;
     }
@@ -46,10 +49,18 @@ public class HttpPostWorker extends AsyncTask<JSONBean, Void, List<String>> {
     }
 
     @Override
+    protected void onPreExecute() {
+        dialogo.setTitle("Tarea Guardar");
+        dialogo.setMessage("Guardando datos en servidor...");
+        dialogo.show();
+    }
+
+    @Override
     protected void onPostExecute(List<String> result) {
         for (AsyncTaskListener<List<String>> listener : listeners) {
             listener.processResult(result);
         }
+        if (dialogo.isShowing()) dialogo.dismiss();
     }
 
     public void addAsyncTaskListener(AsyncTaskListener<List<String>> listener) {
@@ -83,6 +94,7 @@ public class HttpPostWorker extends AsyncTask<JSONBean, Void, List<String>> {
             Log.i("ServerID Recibido", String.valueOf(serverId));
             bean.setServerId(serverId);
             Intent intent = new Intent(ContactReceiver.FILTER_NAME);
+            intent.putExtra("operacion", ContactReceiver.CONTACTO_ACTUALIZADO);
             intent.putExtra("datos", bean);
             Context ctx = ApplicationContextProvider.getContext();
             ctx.sendBroadcast(intent);

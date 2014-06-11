@@ -132,7 +132,6 @@ public class ListaContactosFragment extends Fragment
             }
         }
         tracker.clearRecords();
-        //TODO: Reemplazar botón de sincronización por un progress bar
     }
 
     @Override

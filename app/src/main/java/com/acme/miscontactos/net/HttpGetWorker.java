@@ -1,5 +1,7 @@
 package com.acme.miscontactos.net;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,11 +24,13 @@ import java.util.HashSet;
  */
 public class HttpGetWorker<T> extends AsyncTask<String, Void, T> {
 
+    private final ProgressDialog dialogo;
     private HashSet<AsyncTaskListener<T>> listeners;
     private final ObjectMapper mapper;
     private Class<T> beanClass;
 
-    public HttpGetWorker(ObjectMapper mapper, Class<T> beanClass) {
+    public HttpGetWorker(ObjectMapper mapper, Class<T> beanClass, Context context) {
+        dialogo = new ProgressDialog(context);
         this.mapper = mapper;
         this.beanClass = beanClass;
     }
@@ -37,10 +41,18 @@ public class HttpGetWorker<T> extends AsyncTask<String, Void, T> {
     }
 
     @Override
+    protected void onPreExecute() {
+        dialogo.setTitle("Tarea Descarga");
+        dialogo.setMessage("Descargando datos del servidor...");
+        dialogo.show();
+    }
+
+    @Override
     protected void onPostExecute(T result) {
         for (AsyncTaskListener<T> listener : listeners) {
             listener.processResult(result);
         }
+        if (dialogo.isShowing()) dialogo.dismiss();
     }
 
     public void addAsyncTaskListener(AsyncTaskListener<T> listener) {

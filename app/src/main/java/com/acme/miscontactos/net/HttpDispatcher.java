@@ -44,7 +44,7 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/owner/").append(REGISTRY_OWNER).toString();
         if (wifiEnabled()) {
-            HttpGetWorker<T> worker = new HttpGetWorker<T>(mapper, resultType);
+            HttpGetWorker<T> worker = new HttpGetWorker<T>(mapper, resultType, context);
             worker.addAsyncTaskListener(listener);
             worker.execute(url);
         } else {
@@ -56,7 +56,7 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.toString();
         if (wifiEnabled()) {
-            HttpPostWorker worker = new HttpPostWorker(mapper, url);
+            HttpPostWorker worker = new HttpPostWorker(mapper, url, context);
             worker.addAsyncTaskListener(listener);
             worker.execute(bean);
         } else {
@@ -68,7 +68,7 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/").append(bean.getServerId()).toString();
         if (wifiEnabled()) {
-            HttpPutWorker worker = new HttpPutWorker(mapper, url);
+            HttpPutWorker worker = new HttpPutWorker(mapper, url, context);
             worker.addAsyncTaskListener(listener);
             worker.execute(bean);
         } else {
@@ -80,7 +80,7 @@ public class HttpDispatcher {
         StringBuilder builder = new StringBuilder(String.format(BASE_URL_ADDRESS, SERVER_ADDRESS, SERVER_PORT));
         String url = builder.append("/").append(bean.getServerId()).toString();
         if (wifiEnabled()) {
-            HttpDeleteWorker worker = new HttpDeleteWorker(mapper);
+            HttpDeleteWorker worker = new HttpDeleteWorker(mapper, context);
             worker.addAsyncTaskListener(listener);
             worker.execute(url);
         } else {
