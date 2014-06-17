@@ -19,6 +19,9 @@ import android.widget.Toast;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements View.OnTouchListener {
@@ -157,6 +160,14 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         Intent intent = new Intent(MenuBarActionReceiver.FILTER_NAME);
         intent.putExtra("operacion", MenuBarActionReceiver.ELIMINAR_CONTACTOS);
         sendBroadcast(intent);
+    }
+
+    public static ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        // Desactivar la autodetección y obligar al uso de atributos y no de getter/setter
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        return mapper;
     }
 
 
