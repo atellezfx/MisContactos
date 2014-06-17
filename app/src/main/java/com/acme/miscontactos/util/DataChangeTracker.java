@@ -51,7 +51,7 @@ public class DataChangeTracker {
             String className = bean.getClass().getName();
             String record = String.format(operacion, className, mapper.writeValueAsString(bean));
             PrintStream out = new PrintStream(fos);
-            out.print(record);
+            out.println(record); // Autoflush
             out.close();
         } catch (Exception e) {
             Log.e("DataChangeTracker.storeRecord()", e.getLocalizedMessage(), e);

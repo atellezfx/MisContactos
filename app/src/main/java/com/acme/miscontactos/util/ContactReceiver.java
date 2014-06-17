@@ -46,26 +46,24 @@ public class ContactReceiver extends BroadcastReceiver {
     }
 
     private void agregarContacto(Intent intent) {
-//        Contacto contacto = (Contacto) intent.getSerializableExtra("datos");
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
         // TODO: Eliminar Log después de fase de pruebas
         Log.d("Parcelable Contacto", contacto.getNombre());
         if (activity != null) {
             DatabaseHelper helper = activity.getHelper();
-            RuntimeExceptionDao<Contacto, Integer> dao = helper.getContactoRuntimeDAO();
+            RuntimeExceptionDao<Contacto, Integer> dao = helper.getRuntimeExceptionDao(Contacto.class);
             dao.create(contacto);
             tracker.recordCreateOp(contacto);
         }
     }
 
     private void eliminarContacto(Intent intent) {
-//        ArrayList<Contacto> lista = (ArrayList<Contacto>) intent.getSerializableExtra("datos");
         ArrayList<Contacto> lista = intent.getParcelableArrayListExtra("datos");
         // TODO: Eliminar Log después de fase de pruebas
         Log.d("Parcelable List", lista.toString());
         if (activity != null) {
             DatabaseHelper helper = activity.getHelper();
-            RuntimeExceptionDao<Contacto, Integer> dao = helper.getContactoRuntimeDAO();
+            RuntimeExceptionDao<Contacto, Integer> dao = helper.getRuntimeExceptionDao(Contacto.class);
             for (Contacto contacto : lista) {
                 dao.refresh(contacto);
                 tracker.recordDeleteOp(contacto);
@@ -75,11 +73,10 @@ public class ContactReceiver extends BroadcastReceiver {
     }
 
     private void actualizarContacto(Intent intent) {
-//        Contacto contacto = (Contacto) intent.getSerializableExtra("datos");
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
         if (activity != null) {
             DatabaseHelper helper = activity.getHelper();
-            RuntimeExceptionDao<Contacto, Integer> dao = helper.getContactoRuntimeDAO();
+            RuntimeExceptionDao<Contacto, Integer> dao = helper.getRuntimeExceptionDao(Contacto.class);
             dao.update(contacto);
             // Por el momento la actualización sólo implica el asignar el serverId regresado por
             // el servidor al insertar nuevas contactos, no aplicamos al tracker en esta ocasión
