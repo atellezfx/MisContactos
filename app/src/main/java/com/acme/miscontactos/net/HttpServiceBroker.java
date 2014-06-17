@@ -47,7 +47,7 @@ public class HttpServiceBroker extends BroadcastReceiver {
                 for (JSONBean bean : updateList) {
                     intent.putExtra("url", String.format("%s/%d", base_url_address, bean.getServerId()));
                     intent.putExtra("bean", bean);
-                    performRequest(context, intent, HttpPostService.class);
+                    performRequest(context, intent, HttpPutService.class);
                 }
                 break;
             case HTTP_DELETE_METHOD:
@@ -56,7 +56,7 @@ public class HttpServiceBroker extends BroadcastReceiver {
                 for (JSONBean bean : deleteList) {
                     intent.putExtra("url", String.format("%s/%d", base_url_address, bean.getServerId()));
                     intent.putExtra("bean", bean);
-                    performRequest(context, intent, HttpPostService.class);
+                    performRequest(context, intent, HttpDeleteService.class);
                 }
                 break;
         }

@@ -54,7 +54,7 @@ public class HttpPostService extends IntentService {
     private void processResponse(String respStr, JSONBean bean) {
         try {
             JsonNode node = mapper.readTree(respStr);
-            int serverId = node.path("serverIde").asInt();
+            int serverId = node.path("serverId").asInt();
             // TODO: Eliminar Log al finalizar las pruebas
             Log.i("ServerID Recibido", String.valueOf(serverId));
             bean.setServerId(serverId);
