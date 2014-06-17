@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
-import com.acme.miscontactos.net.HttpDispatcher;
+import com.acme.miscontactos.entity.JSONBean;
+import com.acme.miscontactos.net.HttpServiceBroker;
 import com.acme.miscontactos.util.AsyncTaskListener;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DataChangeTracker;
@@ -68,7 +69,7 @@ public class ListaContactosFragment extends Fragment
         OrmLiteBaseActivity<DatabaseHelper> activity = getOrmLiteBaseActivity();
         if (activity != null) {
             DatabaseHelper helper = activity.getHelper();
-            RuntimeExceptionDao<Contacto, Integer> dao = helper.getContactoRuntimeDAO();
+            RuntimeExceptionDao<Contacto, Integer> dao = helper.getRuntimeExceptionDao(Contacto.class);
             List<Contacto> contactos = dao.queryForAll();
             for (Contacto contacto : contactos) {
                 ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
@@ -115,23 +116,55 @@ public class ListaContactosFragment extends Fragment
 
     @Override
     public void sincronizarDatos() {
-        HttpDispatcher dispatcher = new HttpDispatcher(getActivity());
         DataChangeTracker tracker = new DataChangeTracker(getActivity());
-        ArrayList<StoredRecord> cambios = tracker.retrieveRecords();
-        for (StoredRecord record : cambios) {
+        ArrayList<StoredRecord> allRecords = tracker.retrieveRecords();
+        ArrayList<StoredRecord> createList = new ArrayList<StoredRecord>();
+        ArrayList<StoredRecord> deleteList = new ArrayList<StoredRecord>();
+        ArrayList<StoredRecord> updateList = new ArrayList<StoredRecord>();
+        for (StoredRecord record : allRecords) {
             switch (record.getType()) {
                 case StoredRecord.TYPE_CREATE:
-                    dispatcher.doPost(record.getData(), this);
+                    createList.add(record);
                     break;
                 case StoredRecord.TYPE_DELETE:
-                    dispatcher.doDelete(record.getData(), this);
+                    deleteList.add(record);
                     break;
                 case StoredRecord.TYPE_UPDATE:
-                    dispatcher.doPut(record.getData(), this);
+                    updateList.add(record);
                     break;
             }
         }
+        doPost(createList);
+        doPut(updateList);
+        doDelete(deleteList);
         tracker.clearRecords();
+    }
+
+    private void doDelete(ArrayList<StoredRecord> deleteList) {
+        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
+        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_DELETE_METHOD);
+        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
+        for (StoredRecord record : deleteList) datos.add(record.getData());
+        intent.putParcelableArrayListExtra("datos", datos);
+        getActivity().sendBroadcast(intent);
+    }
+
+    private void doPut(ArrayList<StoredRecord> updateList) {
+        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
+        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_PUT_METHOD);
+        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
+        for (StoredRecord record : updateList) datos.add(record.getData());
+        intent.putParcelableArrayListExtra("datos", datos);
+        getActivity().sendBroadcast(intent);
+    }
+
+    private void doPost(ArrayList<StoredRecord> createList) {
+        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
+        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_POST_METHOD);
+        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
+        for (StoredRecord record : createList) datos.add(record.getData());
+        intent.putParcelableArrayListExtra("datos", datos);
+        getActivity().sendBroadcast(intent);
     }
 
     @Override

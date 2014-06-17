@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.acme.miscontactos.net.HttpServiceBroker;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
+import com.acme.miscontactos.util.NotificationController;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +33,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     private ListaContactosFragment fragmentoLista;
     private final int CONFIG_REQUEST_CODE = 0;
     private ContactReceiver receiver;
+    private HttpServiceBroker broker;
     private ActionBar actionBar;
 
     @Override
@@ -45,13 +48,16 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     public void onResume() {
         super.onResume();
         receiver = new ContactReceiver(this);
+        broker = new HttpServiceBroker();
         registerReceiver(receiver, new IntentFilter(ContactReceiver.FILTER_NAME));
+        registerReceiver(broker, new IntentFilter(HttpServiceBroker.FILTER_NAME));
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        unregisterReceiver(broker);
     }
 
     private void inicializaComponentes() {
@@ -151,6 +157,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
 
     private void notificarSincronizacion() {
+        NotificationController.notify("Agenda", "Sincronizando datos...", 12345);
         Intent intent = new Intent(MenuBarActionReceiver.FILTER_NAME);
         intent.putExtra("operacion", MenuBarActionReceiver.SINCRONIZAR_CONTACTOS);
         sendBroadcast(intent);
