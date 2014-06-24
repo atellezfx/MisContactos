@@ -1,4 +1,6 @@
 apply plugin: 'android'
+// CARGAR EL PLUGIN PROCESADOR DE ANOTACIONES
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 19
@@ -31,4 +33,9 @@ dependencies {
     compile files('libs/jackson-core-2.4.0.jar')
     compile files('libs/jackson-annotations-2.4.0.jar')
     compile files('libs/jackson-databind-2.4.0.jar')
+    compile 'com.tojc.ormlite.android:ormlite-content-provider-library:1.0.4@jar'
+    compile 'com.tojc.ormlite.android:ormlite-content-provider-compiler:1.0.4@jar'
+    // AGREGANDO DEPENDENCIAS APRA EL PLUGIN DE PROCESAMIENTO DE ANOTACIONES
+    compile 'com.squareup.dagger:dagger:1.1.+'
+    apt 'com.squareup.dagger:dagger-compiler:1.1.+'
 }

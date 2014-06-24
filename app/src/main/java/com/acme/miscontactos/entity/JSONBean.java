@@ -1,5 +1,6 @@
 package com.acme.miscontactos.entity;
 
+import android.content.ContentValues;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,8 +49,9 @@ public abstract class JSONBean implements PropertyChangeListener, Parcelable {
     }
 
     public abstract int getServerId();
-
     public abstract void setServerId(int serverId);
+
+    public abstract ContentValues getContentValues();
 
     public String getMd5() {
         return md5;
