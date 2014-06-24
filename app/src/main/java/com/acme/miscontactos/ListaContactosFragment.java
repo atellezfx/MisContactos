@@ -1,13 +1,15 @@
 package com.acme.miscontactos;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +17,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
+import com.acme.miscontactos.entity.ContactoContract;
 import com.acme.miscontactos.entity.JSONBean;
 import com.acme.miscontactos.net.HttpServiceBroker;
+import com.acme.miscontactos.util.ApplicationContextProvider;
 import com.acme.miscontactos.util.AsyncTaskListener;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DataChangeTracker;
-import com.acme.miscontactos.util.DatabaseHelper;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,24 +67,16 @@ public class ListaContactosFragment extends Fragment
     private void inicializarComponentes(View view) {
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        OrmLiteBaseActivity<DatabaseHelper> activity = getOrmLiteBaseActivity();
-        if (activity != null) {
-            DatabaseHelper helper = activity.getHelper();
-            RuntimeExceptionDao<Contacto, Integer> dao = helper.getRuntimeExceptionDao(Contacto.class);
-            List<Contacto> contactos = dao.queryForAll();
-            for (Contacto contacto : contactos) {
-                ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
-                transaction.add(R.id.lista_fragmentos_contacto, cfrag);
-            }
+        Context context = ApplicationContextProvider.getContext();
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(ContactoContract.CONTENT_URI, null, null, null, null);
+        List<Contacto> contactos = Contacto.crearListaDeCursor(cursor);
+        for (Contacto contacto : contactos) {
+            ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
+            transaction.add(R.id.lista_fragmentos_contacto, cfrag);
         }
+        cursor.close();
         transaction.commit();
-    }
-
-    private OrmLiteBaseActivity<DatabaseHelper> getOrmLiteBaseActivity() {
-        Activity activity = getActivity();
-        if (activity instanceof OrmLiteBaseActivity)
-            return (OrmLiteBaseActivity<DatabaseHelper>) activity;
-        return null;
     }
 
     @Override

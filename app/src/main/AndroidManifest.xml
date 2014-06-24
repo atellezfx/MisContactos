@@ -43,7 +43,8 @@
         <provider
             android:authorities="com.acme.miscontactos"
             android:name=".entity.ContactoProvider"
-            android:exported="false" />
+            android:exported="false"
+            android:enabled="true" />
 
     </application>
 
