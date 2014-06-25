@@ -5,9 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.provider.Settings;
+import android.widget.RemoteViews;
 
 import com.acme.miscontactos.MainActivity;
 import com.acme.miscontactos.R;
@@ -20,39 +19,58 @@ public class NotificationController {
     private static Context context = ApplicationContextProvider.getContext();
 
     public static void notify(String title, String message, int notifID, int currentProgress, int maxProgress) {
-        Bitmap iconLarge = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder = new Notification.Builder(context)
-                .setSmallIcon(R.drawable.ic_stat_agenda)
-                .setLargeIcon(iconLarge)
-                .setContentTitle(title)
-                .setTicker(message)
-                .setNumber(currentProgress)
-                .setAutoCancel(true)
-                .setProgress(maxProgress, currentProgress, false)
-                .setContentText(message);
-        if (currentProgress == 1) builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        RemoteViews contentView = createContentView(title, message, currentProgress, maxProgress);
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContent(contentView)
+                .setSmallIcon(R.drawable.ic_stat_agenda)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setTicker(message)
+                .setContentIntent(pendingIntent)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        Notification notification = builder.build();
+        manager.notify(notifID, notification);
+    }
+
+    public static void notify(String title, String message, int notifID, boolean onGoing) {
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        RemoteViews contentView = createContentView(title, message, -1, 0);
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContent(contentView)
+                .setSmallIcon(R.drawable.ic_stat_agenda)
+                .setOngoing(onGoing)
+                .setTicker(message)
+                .setAutoCancel(!onGoing)
+                .setContentIntent(pendingIntent)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         Notification notification = builder.build();
         manager.notify(notifID, notification);
     }
 
     public static void notify(String title, String message, int notifID) {
-        Bitmap iconLarge = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        notify(title, message, notifID, false);
+    }
+
+    public static void clearNotification(int notifID) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder = new Notification.Builder(context)
-                .setSmallIcon(R.drawable.ic_stat_agenda)
-                .setLargeIcon(iconLarge)
-                .setContentTitle(title)
-                .setTicker(message)
-                .setAutoCancel(true)
-                .setContentText(message)
-                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        Notification notification = builder.build();
-        manager.notify(notifID, notification);
+        manager.cancel(notifID);
+    }
+
+    private static RemoteViews createContentView(String title, String message, int currentProgress, int maxProgress) {
+        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.sync_notification);
+        contentView.setImageViewResource(R.id.notification_image, R.drawable.ic_stat_agenda);
+        contentView.setTextViewText(R.id.notification_title, title);
+        contentView.setTextViewText(R.id.notification_text, message);
+        if (currentProgress > 0)
+            contentView.setProgressBar(R.id.notification_progress, maxProgress, currentProgress, false);
+        else
+            contentView.setImageViewResource(R.id.notification_check, R.drawable.ic_action_accept);
+        return contentView;
     }
 
 }

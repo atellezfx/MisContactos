@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.acme.miscontactos.MainActivity;
 import com.acme.miscontactos.entity.JSONBean;
+import com.acme.miscontactos.util.NotificationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpEntity;
@@ -25,6 +26,7 @@ import java.util.HashMap;
  */
 public class HttpPutService extends IntentService {
 
+    public final int NOTIFICATION_ID = HttpServiceBroker.SYNC_SERVICE_NOTIFICATION_ID + HttpServiceBroker.HTTP_PUT_METHOD;
     private final ObjectMapper mapper;
 
     public HttpPutService() {
@@ -48,9 +50,7 @@ public class HttpPutService extends IntentService {
             if (statusCode == 200) {
                 HttpEntity entity = resp.getEntity();
                 String respStr = EntityUtils.toString(entity);
-                // TODO: Eliminar Log e implementar una notificación al usuario
-                Log.i("HTTP PUT RESPONSE JSON STRING", respStr);
-                processResponse(respStr);
+                processResponse(intent, respStr);
             } else {
                 Log.e("JSON", "Error al leer la respuesta");
             }
@@ -59,8 +59,23 @@ public class HttpPutService extends IntentService {
         }
     }
 
-    private void processResponse(String respStr) throws IOException {
+    @Override
+    public void onDestroy() {
+        NotificationController.notify("Agenda", "Sincronizando datos modificados...", NOTIFICATION_ID);
+        super.onDestroy();
+    }
+
+    private void processResponse(Intent intent, String respStr) throws IOException {
         HashMap<String, String> data = mapper.readValue(respStr, HashMap.class);
-        // TODO: Implementar código del mapa (alguna notificación al usuario)
+        // TODO: Eliminar Log.i después de la fase de pruebas
+        Log.i("HTTP_PUT RESPONSE: ", String.valueOf(data));
+        notificarRespuesta(intent);
+    }
+
+    private void notificarRespuesta(Intent intent) {
+        int maxProgress = intent.getIntExtra("maxProgress", -1);
+        int currentProgress = intent.getIntExtra("currentProgress", -1);
+        NotificationController.notify("Agenda", "Sincronizando datos modificados...",
+                NOTIFICATION_ID, currentProgress, maxProgress);
     }
 }

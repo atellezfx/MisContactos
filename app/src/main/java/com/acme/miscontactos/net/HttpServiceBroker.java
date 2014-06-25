@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class HttpServiceBroker extends BroadcastReceiver {
 
     public static final String FILTER_NAME = "service_broker";
+    public static final int SYNC_SERVICE_NOTIFICATION_ID = 12345;
     public static final int HTTP_GET_METHOD = 1, HTTP_POST_METHOD = 2, HTTP_PUT_METHOD = 3, HTTP_DELETE_METHOD = 4;
     private String base_url_address, propietario;
 
@@ -35,27 +36,35 @@ public class HttpServiceBroker extends BroadcastReceiver {
             case HTTP_POST_METHOD:
                 ArrayList<JSONBean> createList = intent.getParcelableArrayListExtra("datos");
                 Log.i("HTTP_POST_METHOD", createList.toString());
-                for (JSONBean bean : createList) {
+                for (int i = 0; i < createList.size(); i++) {
                     intent.putExtra("url", base_url_address);
-                    intent.putExtra("bean", bean);
+                    intent.putExtra("bean", createList.get(i));
+                    intent.putExtra("maxProgress", createList.size());
+                    intent.putExtra("currentProgress", i + 1);
                     performRequest(context, intent, HttpPostService.class);
                 }
                 break;
             case HTTP_PUT_METHOD:
                 ArrayList<JSONBean> updateList = intent.getParcelableArrayListExtra("datos");
                 Log.i("HTTP_PUT_METHOD", updateList.toString());
-                for (JSONBean bean : updateList) {
+                for (int i = 0; i < updateList.size(); i++) {
+                    JSONBean bean = updateList.get(i);
                     intent.putExtra("url", String.format("%s/%d", base_url_address, bean.getServerId()));
                     intent.putExtra("bean", bean);
+                    intent.putExtra("maxProgress", updateList.size());
+                    intent.putExtra("currentProgress", i + 1);
                     performRequest(context, intent, HttpPutService.class);
                 }
                 break;
             case HTTP_DELETE_METHOD:
                 ArrayList<JSONBean> deleteList = intent.getParcelableArrayListExtra("datos");
                 Log.i("HTTP_DELETE_METHOD", deleteList.toString());
-                for (JSONBean bean : deleteList) {
+                for (int i = 0; i < deleteList.size(); i++) {
+                    JSONBean bean = deleteList.get(i);
                     intent.putExtra("url", String.format("%s/%d", base_url_address, bean.getServerId()));
                     intent.putExtra("bean", bean);
+                    intent.putExtra("maxProgress", deleteList.size());
+                    intent.putExtra("currentProgress", i + 1);
                     performRequest(context, intent, HttpDeleteService.class);
                 }
                 break;
