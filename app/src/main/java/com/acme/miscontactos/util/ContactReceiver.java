@@ -3,9 +3,12 @@ package com.acme.miscontactos.util;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 
 import com.acme.miscontactos.entity.Contacto;
@@ -52,24 +55,31 @@ public class ContactReceiver extends BroadcastReceiver {
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
         ContentValues values = contacto.getContentValues();
         values.remove(ContactoContract._ID); // Evitar inserción de id en contactos nuevos
-        resolver.insert(ContactoContract.CONTENT_URI, values);
+        Uri insertedUri = resolver.insert(ContactoContract.CONTENT_URI, values);
+        // Obtenemos el id del nuevo registro insertado
+        contacto.setId(Integer.parseInt(insertedUri.getLastPathSegment()));
         tracker.recordCreateOp(contacto);
     }
 
     private void eliminarContacto(Intent intent) {
         ArrayList<Contacto> lista = intent.getParcelableArrayListExtra("datos");
         for (Contacto contacto : lista) {
-            tracker.recordDeleteOp(contacto);
-            String whereClause = String.format("%s = '%s'", ContactoContract._ID, contacto.getId());
-            int eliminados = resolver.delete(ContactoContract.CONTENT_URI, whereClause, null);
+            Uri queryUri = ContentUris.withAppendedId(ContactoContract.CONTENT_URI, contacto.getId());
+            Cursor cursor = resolver.query(queryUri, null, null, null, null, null);
+            contacto = Contacto.crearInstanciaDeCursor(cursor);
+            int eliminados = resolver.delete(queryUri, null, null);
             Log.d("eliminarContacto?", String.valueOf(eliminados));
+            tracker.recordDeleteOp(contacto);
         }
     }
 
     private void actualizarContacto(Intent intent) {
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
-        String whereClause = String.format("%s = '%s'", ContactoContract._ID, contacto.getId());
-        int actualizados = resolver.update(ContactoContract.CONTENT_URI, contacto.getContentValues(), whereClause, null);
+        ContentValues values = contacto.getContentValues();
+        // Evitamos modificar el ID desde este método
+        values.remove(ContactoContract._ID);
+        Uri updateUri = ContentUris.withAppendedId(ContactoContract.CONTENT_URI, contacto.getId());
+        int actualizados = resolver.update(updateUri, values, null, null);
         Log.d("actualizarContacto?", String.valueOf(actualizados));
         // Por el momento la actualización sólo implica el asignar el serverId regresado por
         // el servidor al insertar nuevas contactos, no aplicamos al tracker en esta ocasión

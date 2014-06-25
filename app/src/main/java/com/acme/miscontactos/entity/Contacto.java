@@ -113,6 +113,17 @@ public class Contacto extends JSONBean {
         return lista;
     }
 
+    public static Contacto crearInstanciaDeCursor(Cursor cursor) {
+        if (cursor.moveToNext()) {
+            ContentValues values = new ContentValues();
+            DatabaseUtils.cursorRowToContentValues(cursor, values);
+            Contacto contacto = new Contacto(values);
+            contacto.procesarHashMD5();
+            return contacto;
+        }
+        return null;
+    }
+
     @Override
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
