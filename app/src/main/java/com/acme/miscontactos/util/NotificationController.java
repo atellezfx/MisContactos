@@ -26,7 +26,7 @@ public class NotificationController {
         Notification.Builder builder = new Notification.Builder(context)
                 .setContent(contentView)
                 .setSmallIcon(R.drawable.ic_stat_agenda)
-                .setOngoing(true)
+                .setOngoing(currentProgress < maxProgress)
                 .setOnlyAlertOnce(true)
                 .setTicker(message)
                 .setContentIntent(pendingIntent)
@@ -37,7 +37,7 @@ public class NotificationController {
 
     public static void notify(String title, String message, int notifID, boolean onGoing) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        RemoteViews contentView = createContentView(title, message, -1, 0);
+        RemoteViews contentView = createContentView(title, message, 1, 1);
         Intent notificationIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
         Notification.Builder builder = new Notification.Builder(context)
@@ -66,9 +66,8 @@ public class NotificationController {
         contentView.setImageViewResource(R.id.notification_image, R.drawable.ic_stat_agenda);
         contentView.setTextViewText(R.id.notification_title, title);
         contentView.setTextViewText(R.id.notification_text, message);
-        if (currentProgress > 0)
-            contentView.setProgressBar(R.id.notification_progress, maxProgress, currentProgress, false);
-        else
+        contentView.setProgressBar(R.id.notification_progress, maxProgress, currentProgress, false);
+        if (currentProgress == maxProgress)
             contentView.setImageViewResource(R.id.notification_check, R.drawable.ic_action_accept);
         return contentView;
     }

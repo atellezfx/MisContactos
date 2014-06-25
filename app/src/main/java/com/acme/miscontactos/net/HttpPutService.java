@@ -59,12 +59,6 @@ public class HttpPutService extends IntentService {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        NotificationController.notify("Agenda", "Sincronizando datos modificados...", NOTIFICATION_ID);
-        super.onDestroy();
-    }
-
     private void processResponse(Intent intent, String respStr) throws IOException {
         HashMap<String, String> data = mapper.readValue(respStr, HashMap.class);
         // TODO: Eliminar Log.i después de la fase de pruebas

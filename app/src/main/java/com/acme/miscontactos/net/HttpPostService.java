@@ -53,11 +53,6 @@ public class HttpPostService extends IntentService {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        NotificationController.notify("Agenda", "Sincronizando datos creados...", NOTIFICATION_ID);
-        super.onDestroy();
-    }
 
     private void processResponse(Intent intent, String respStr, JSONBean bean) {
         try {

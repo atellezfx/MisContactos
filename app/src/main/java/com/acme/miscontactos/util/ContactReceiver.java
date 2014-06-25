@@ -70,6 +70,7 @@ public class ContactReceiver extends BroadcastReceiver {
             int eliminados = resolver.delete(queryUri, null, null);
             Log.d("eliminarContacto?", String.valueOf(eliminados));
             tracker.recordDeleteOp(contacto);
+            cursor.close();
         }
     }
 
