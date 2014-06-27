@@ -1,5 +1,5 @@
 #
-# generated on 2014/06/23 10:10:59
+# generated on 2014/06/26 09:08:44
 #
 # --table-start--
 dataClass=com.acme.miscontactos.entity.Contacto
