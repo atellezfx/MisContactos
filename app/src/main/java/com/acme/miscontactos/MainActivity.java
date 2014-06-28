@@ -150,7 +150,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         if (requestCode == CONFIG_REQUEST_CODE) {
             SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(this);
             String username = shp.getString("username", null);
-            String mesg = String.format("Datos del usuario '%s' guardados", username);
+            String mesg = i18n(R.string.mesg_preferences_saved, username);
             Toast.makeText(this, mesg, Toast.LENGTH_SHORT).show();
         }
     }
@@ -175,5 +175,8 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         return mapper;
     }
 
+    private String i18n(int resourceId, Object... formatArgs) {
+        return getResources().getString(resourceId, formatArgs);
+    }
 
 }

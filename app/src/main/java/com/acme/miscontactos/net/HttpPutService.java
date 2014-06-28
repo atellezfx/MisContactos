@@ -1,11 +1,14 @@
 package com.acme.miscontactos.net;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import com.acme.miscontactos.MainActivity;
+import com.acme.miscontactos.R;
 import com.acme.miscontactos.entity.JSONBean;
+import com.acme.miscontactos.util.ApplicationContextProvider;
 import com.acme.miscontactos.util.NotificationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,7 +55,7 @@ public class HttpPutService extends IntentService {
                 String respStr = EntityUtils.toString(entity);
                 processResponse(intent, respStr);
             } else {
-                Log.e("JSON", "Error al leer la respuesta");
+                Log.e("JSON", "Error al leer la respuesta"); // No es necesario i18n en log
             }
         } catch (IOException ex) {
             Log.e("HttpPutService", ex.getLocalizedMessage(), ex);
@@ -69,7 +72,14 @@ public class HttpPutService extends IntentService {
     private void notificarRespuesta(Intent intent) {
         int maxProgress = intent.getIntExtra("maxProgress", -1);
         int currentProgress = intent.getIntExtra("currentProgress", -1);
-        NotificationController.notify("Agenda", "Sincronizando datos modificados...",
+        NotificationController.notify(i18n(R.string.app_name),
+                i18n(R.string.mesg_service_sync, "modificados"),
                 NOTIFICATION_ID, currentProgress, maxProgress);
     }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        Context ctx = ApplicationContextProvider.getContext();
+        return ctx.getResources().getString(resourceId, formatArgs);
+    }
+
 }

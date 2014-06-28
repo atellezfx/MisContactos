@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Agenda</string>
+    <string name="action_settings">Configuración</string>
+
+    <string name="hint_cmpnombre">Nombre</string>
+    <string name="hint_cmptelefono">Telefono</string>
+    <string name="hint_cmpemail">E-mail</string>
+    <string name="hint_cmptdireccion">Dirección</string>
+    <string name="text_btncancelar">Cancelar</string>
+    <string name="text_btnguardar">Guardar</string>
+    <string name="mesg_preferences_saved">Datos del usuario \'%s\' guardados</string>
+
+    <!--Recursos CrearContactoFragment.java -->
+    <string name="title_alertdialog_error">Error</string>
+    <string name="mesg_alertdialog_error">No se ha definido el usuario en las preferencias</string>
+    <string name="mesg_toast_contact_added">%s ha sido agregado a la lista!</string>
+
+    <!--Recursos ListaContactosFragment.java-->
+    <string name="mesg_confirm_delete">¿Está seguro de eliminar los contactos seleccionados?</string>
+    <string name="title_alertdialog_confirm">Confirmar Operación</string>
+    <string name="mesg_positive_dialog_option">SI</string>
+    <string name="mesg_negative_dialog_option">NO</string>
+    <string name="mesg_toast_sync_confirm">Sincronizado %s</string>
+
+    <!--Recursos para HttpServiceBroker.java-->
+    <string name="mesg_wifi_not_available">WiFi no disponible</string>
+    <!--Recursos para Http????Service.java-->
+    <string name="mesg_service_sync">Sincronizando datos %s...</string>
+
+    <!--Recursos Panel Configuración-->
+    <string name="title_settings_menu_item">Configuración</string>
+    <string name="title_config_username">Nombre de usuario</string>
+    <string name="summary_config_username">Usuario para la sincronización de datos</string>
+    <string name="title_user_category">Datos de usuario</string>
+    <string name="title_server_category">Datos del servidor</string>
+    <string name="title_config_server">Servidor</string>
+    <string name="summary_config_server">Nombre o dirección del servidor</string>
+    <string name="title_config_port">Puerto</string>
+    <string name="summary_config_port">Puerto de comunicación</string>
+
+</resources>

@@ -83,9 +83,10 @@ public class ListaContactosFragment extends Fragment
     public void eliminarContactos() {
         String mensaje = "¿Está seguro de eliminar los contactos seleccionados?";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setIcon(R.drawable.ic_action_warning).setTitle("Confirmar Operación");
-        builder.setMessage(mensaje);
-        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+        builder.setIcon(R.drawable.ic_action_warning);
+        builder.setTitle(i18n(R.string.title_alertdialog_confirm));
+        builder.setMessage(i18n(R.string.mesg_confirm_delete));
+        builder.setPositiveButton(i18n(R.string.mesg_positive_dialog_option), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 FragmentManager manager = getFragmentManager();
@@ -103,7 +104,7 @@ public class ListaContactosFragment extends Fragment
                 getActivity().sendBroadcast(intent);
             }
         });
-        builder.setNegativeButton("NO", null);
+        builder.setNegativeButton(i18n(R.string.mesg_negative_dialog_option), null);
         builder.show();
     }
 
@@ -169,7 +170,12 @@ public class ListaContactosFragment extends Fragment
     @Override
     public void processResult(List<String> result) {
         for (String cad : result)
-            Toast.makeText(getActivity(), String.format("Sincronizado %s", cad),
+            Toast.makeText(getActivity(), i18n(R.string.mesg_toast_sync_confirm, cad),
                     Toast.LENGTH_SHORT).show();
     }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        return getResources().getString(resourceId, formatArgs);
+    }
+
 }

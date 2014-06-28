@@ -11,7 +11,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.acme.miscontactos.R;
 import com.acme.miscontactos.entity.JSONBean;
+import com.acme.miscontactos.util.ApplicationContextProvider;
 
 import java.util.ArrayList;
 
@@ -78,7 +80,8 @@ public class HttpServiceBroker extends BroadcastReceiver {
             if (requestIntent.hasExtra("datos")) requestIntent.removeExtra("datos");
             context.startService(requestIntent);
         } else {
-            Toast.makeText(context, "WiFi no disponible", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, i18n(R.string.mesg_wifi_not_available),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -95,4 +98,10 @@ public class HttpServiceBroker extends BroadcastReceiver {
         base_url_address = String.format("http://%s:%s/jsonweb/rest/contacto", address, port);
         propietario = shp.getString("username", null);
     }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        Context ctx = ApplicationContextProvider.getContext();
+        return ctx.getResources().getString(resourceId, formatArgs);
+    }
+
 }

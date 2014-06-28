@@ -20,7 +20,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_toRightOf="@+id/ivContactImage"
         android:layout_toLeftOf="@+id/checkBox">
 
@@ -28,7 +27,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Nombre"
             android:id="@+id/viewNombre"
             android:focusable="false" />
 
@@ -36,7 +34,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Telefono"
             android:id="@+id/viewTelefono"
             android:layout_marginTop="10dp"
             android:focusable="false" />
@@ -45,7 +42,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Email"
             android:id="@+id/viewEmail"
             android:focusable="false" />
 
@@ -53,7 +49,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Direccion"
             android:id="@+id/viewDireccion"
             android:focusable="false" />
     </LinearLayout>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.acme.miscontactos.MainActivity;
+import com.acme.miscontactos.R;
 import com.acme.miscontactos.entity.JSONBean;
 import com.acme.miscontactos.util.ApplicationContextProvider;
 import com.acme.miscontactos.util.ContactReceiver;
@@ -75,7 +76,14 @@ public class HttpPostService extends IntentService {
     private void notificarRespuesta(Intent intent) {
         int maxProgress = intent.getIntExtra("maxProgress", -1);
         int currentProgress = intent.getIntExtra("currentProgress", -1);
-        NotificationController.notify("Agenda", "Sincronizando datos creados...",
-                NOTIFICATION_ID, currentProgress, maxProgress);
+        NotificationController.notify(i18n(R.string.app_name),
+                i18n(R.string.mesg_service_sync, "creados"), NOTIFICATION_ID, currentProgress,
+                maxProgress);
     }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        Context ctx = ApplicationContextProvider.getContext();
+        return ctx.getResources().getString(resourceId, formatArgs);
+    }
+
 }

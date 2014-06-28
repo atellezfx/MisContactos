@@ -1,10 +1,13 @@
 package com.acme.miscontactos.net;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import com.acme.miscontactos.MainActivity;
+import com.acme.miscontactos.R;
+import com.acme.miscontactos.util.ApplicationContextProvider;
 import com.acme.miscontactos.util.NotificationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,8 +66,14 @@ public class HttpDeleteService extends IntentService {
     private void notificarRespuesta(Intent intent) {
         int maxProgress = intent.getIntExtra("maxProgress", -1);
         int currentProgress = intent.getIntExtra("currentProgress", -1);
-        NotificationController.notify("Agenda", "Sincronizando datos eliminados...",
-                NOTIFICATION_ID, currentProgress, maxProgress);
+        NotificationController.notify(i18n(R.string.app_name),
+                i18n(R.string.mesg_service_sync, "eliminados"), NOTIFICATION_ID, currentProgress,
+                maxProgress);
+    }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        Context ctx = ApplicationContextProvider.getContext();
+        return ctx.getResources().getString(resourceId, formatArgs);
     }
 
 }

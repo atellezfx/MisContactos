@@ -101,14 +101,14 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
                 // Obtenemos el atributo TAG con la Uri de la imagen
         );
         if (result) {
-            String mesg = String.format("%s ha sido agregado a la lista!", txtNombre.getText());
+            String mesg = i18n(R.string.mesg_toast_contact_added, txtNombre.getText());
             Toast.makeText(view.getContext(), mesg, Toast.LENGTH_SHORT).show();
             btnGuardar.setEnabled(false);
             limpiarCampos();
         } else {
             AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-            alert.setTitle("Error");
-            alert.setMessage("No se ha definido el usuario en las preferencias");
+            alert.setTitle(i18n(R.string.title_alertdialog_error));
+            alert.setMessage(i18n(R.string.mesg_alertdialog_error));
             alert.setPositiveButton("OK", null);
             alert.show();
         }
@@ -154,4 +154,9 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
             imgViewContacto.setTag(uri);
         }
     }
+
+    private String i18n(int resourceId, Object... formatArgs) {
+        return getResources().getString(resourceId, formatArgs);
+    }
+
 }

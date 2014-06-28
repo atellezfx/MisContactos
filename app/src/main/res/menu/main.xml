@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_settings"
-        android:title="Configuracón"
+        android:title="@string/title_settings_menu_item"
         android:icon="@drawable/ic_action_settings"
         android:showAsAction="always" />
 
