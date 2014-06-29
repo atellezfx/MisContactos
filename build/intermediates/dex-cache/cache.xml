@@ -2,21 +2,25 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-android-4.48-1dca8f17e4046ac9342f93324cbc9973ce8f95bb.jar"
-        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/ormlite-android-4.48.jar"
-        jumboMode="false" revision="19.1.0" sha1="9e45246f4a068cad94e03f34bf8f24358279a7f7" />
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-databind-2.4.1-1cf265e4c78879e98cddb65567adf10c9009088a.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.4.1/f07c773f7b3a03c3801d405cadbdc93f7548e321/jackson-databind-2.4.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="f07c773f7b3a03c3801d405cadbdc93f7548e321" />
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-databind-2.4.0-510543f09233f56c281a56b2c5ee69e33df27445.jar"
-        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-databind-2.4.0.jar"
-        jumboMode="false" revision="19.1.0" sha1="473e063d6396a1ff6e4b9c7943e604291ce18b07" />
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-android-4.48-81d3575d11dc5ea6198393c2099dbc37da45e71e.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.j256.ormlite/ormlite-android/4.48/afa06f539a4026c10b247386312aa67404b80a16/ormlite-android-4.48.jar"
+        jumboMode="false" revision="19.1.0" sha1="afa06f539a4026c10b247386312aa67404b80a16" />
+    <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-core-4.48-f9abc84f4117858b383dd95b4d5b0f52e9a26509.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.j256.ormlite/ormlite-core/4.48/e579bd2905d0399af5029aaaf9817d5fa0ca88a5/ormlite-core-4.48.jar"
+        jumboMode="false" revision="19.1.0" sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5" />
     <item
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/dagger-1.1.0-e0244130672f219ced524a605c821fc253d3d8cd.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.squareup.dagger/dagger/1.1.0/49f2061c938987c8e56679a731d74fd8448d8742/dagger-1.1.0.jar"
         jumboMode="false" revision="19.1.0" sha1="49f2061c938987c8e56679a731d74fd8448d8742" />
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.4.0-07bbcb4a49b3b00816895b82b3fdc11dbc3ff164.jar"
-        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-annotations-2.4.0.jar"
-        jumboMode="false" revision="19.1.0" sha1="d6a66c7a5f01cf500377bd669507a08cfeba882a" />
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-core-2.4.1-6b48b72b54bf2bf839ab31c76f33fa2f57fd03c7.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.1/b130bcfb5a9c410c3cbd2e0adec9437e69a39e2c/jackson-core-2.4.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="b130bcfb5a9c410c3cbd2e0adec9437e69a39e2c" />
     <item
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-content-provider-compiler-1.0.4-e40688911e20c4f8423d348e150cbece55abcc8e.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.tojc.ormlite.android/ormlite-content-provider-compiler/1.0.4/63ac7704ccd3d6ebb2da9575b8762125a083cef5/ormlite-content-provider-compiler-1.0.4.jar"
@@ -34,12 +38,12 @@
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
         jumboMode="false" revision="19.1.0" sha1="6975da39a7040257bd51d21a231b76c915872d38" />
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-core-4.48-42c0d0984bbe6968803589d548c4402dd22339c6.jar"
-        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/ormlite-core-4.48.jar"
-        jumboMode="false" revision="19.1.0" sha1="00b3081e1074bf380cc1d09d6ef4f8e5415311f2" />
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-099787100163cb4fcedbfbd70e8b928e48ba9ef5.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.2/d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27/picasso-2.3.2.jar"
+        jumboMode="false" revision="19.1.0" sha1="d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27" />
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-core-2.4.0-a33967c64b9f4561d45e27e69c215f8b25d3dc60.jar"
-        jar="/Users/alejandro/AndroidStudioProjects/MisContactos/app/libs/jackson-core-2.4.0.jar"
-        jumboMode="false" revision="19.1.0" sha1="1e33fd4cca6c4a9bf3d2f638cabb504a5b5c989d" />
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.4.1-9701096050fce3601951193fe92d2622987912fd.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.4.1/55605135bd7b836612e0bba7037c9669f6ccf89f/jackson-annotations-2.4.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="55605135bd7b836612e0bba7037c9669f6ccf89f" />
 
 </pre-dex-items>

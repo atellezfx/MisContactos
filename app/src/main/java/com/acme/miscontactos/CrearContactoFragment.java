@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.acme.miscontactos.entity.Contacto;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.TextChangedListener;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by alejandro on 5/2/14.
@@ -149,7 +151,8 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
                 ContentResolver resolver = getActivity().getContentResolver();
                 resolver.takePersistableUriPermission(uri, takeFlags);
             }
-            imgViewContacto.setImageURI(uri);
+            Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).fit()
+                    .placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
             // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
             imgViewContacto.setTag(uri);
         }
