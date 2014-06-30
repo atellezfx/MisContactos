@@ -6,6 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="115dp"
     android:background="@drawable/fondo_contacto"
+    android:id="@+id/listview_item"
     tools:context="com.acme.miscontactos.ContactoFragment">
 
     <ImageView

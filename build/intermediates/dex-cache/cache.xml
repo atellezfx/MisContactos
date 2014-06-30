@@ -14,10 +14,6 @@
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.j256.ormlite/ormlite-core/4.48/e579bd2905d0399af5029aaaf9817d5fa0ca88a5/ormlite-core-4.48.jar"
         jumboMode="false" revision="19.1.0" sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5" />
     <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/dagger-1.1.0-e0244130672f219ced524a605c821fc253d3d8cd.jar"
-        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.squareup.dagger/dagger/1.1.0/49f2061c938987c8e56679a731d74fd8448d8742/dagger-1.1.0.jar"
-        jumboMode="false" revision="19.1.0" sha1="49f2061c938987c8e56679a731d74fd8448d8742" />
-    <item
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/jackson-core-2.4.1-6b48b72b54bf2bf839ab31c76f33fa2f57fd03c7.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.4.1/b130bcfb5a9c410c3cbd2e0adec9437e69a39e2c/jackson-core-2.4.1.jar"
         jumboMode="false" revision="19.1.0" sha1="b130bcfb5a9c410c3cbd2e0adec9437e69a39e2c" />
@@ -26,6 +22,10 @@
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.tojc.ormlite.android/ormlite-content-provider-compiler/1.0.4/63ac7704ccd3d6ebb2da9575b8762125a083cef5/ormlite-content-provider-compiler-1.0.4.jar"
         jumboMode="false" revision="19.1.0" sha1="63ac7704ccd3d6ebb2da9575b8762125a083cef5" />
     <item
+        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/butterknife-5.1.1-3078162be7c5ef6fc0ef9752b3420cb73e3a8fc0.jar"
+        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/5.1.1/b3652dfd65ca0bcf18790ff1a1f7624af4cb2bb8/butterknife-5.1.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="b3652dfd65ca0bcf18790ff1a1f7624af4cb2bb8" />
+    <item
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/guava-16.0.1-25473c5ce9cee101d9aa76727c70f01c9d9a61f2.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5/guava-16.0.1.jar"
         jumboMode="false" revision="19.1.0" sha1="5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5" />
@@ -33,10 +33,6 @@
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/ormlite-content-provider-library-1.0.4-5e705ad4a4d5de554c9df2e6f6198eaff451d66a.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.tojc.ormlite.android/ormlite-content-provider-library/1.0.4/8b873eea07437730d9f6afdd52b9965b5ae0963f/ormlite-content-provider-library-1.0.4.jar"
         jumboMode="false" revision="19.1.0" sha1="8b873eea07437730d9f6afdd52b9965b5ae0963f" />
-    <item
-        dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/javax.inject-1-f1549e37c92365753ba344aad82ceb5c7df48d40.jar"
-        jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
-        jumboMode="false" revision="19.1.0" sha1="6975da39a7040257bd51d21a231b76c915872d38" />
     <item
         dex="/Users/alejandro/AndroidStudioProjects/MisContactos/app/build/intermediates/pre-dexed/debug/picasso-2.3.2-099787100163cb4fcedbfbd70e8b928e48ba9ef5.jar"
         jar="/Users/alejandro/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.3.2/d6b7f0093cec6c9faf65dbfd6a6a345d0ed25e27/picasso-2.3.2.jar"

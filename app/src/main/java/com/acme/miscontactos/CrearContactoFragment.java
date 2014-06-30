@@ -22,46 +22,49 @@ import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
 import com.acme.miscontactos.util.ContactReceiver;
-import com.acme.miscontactos.util.TextChangedListener;
 import com.squareup.picasso.Picasso;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * Created by alejandro on 5/2/14.
  */
-public class CrearContactoFragment extends Fragment implements View.OnClickListener {
+public class CrearContactoFragment extends Fragment {
 
-    private EditText txtNombre, txtTelefono, txtEmail, txtDireccion;
-    private ImageView imgViewContacto;
-    private Button btnGuardar, btnCancelar;
+    @InjectView(R.id.cmpNombre)
+    protected EditText txtNombre;
+
+    @InjectView(R.id.cmpTelefono)
+    protected EditText txtTelefono;
+
+    @InjectView(R.id.cmpEmail)
+    protected EditText txtEmail;
+
+    @InjectView(R.id.cmpDireccion)
+    protected EditText txtDireccion;
+
+    @InjectView(R.id.imgContacto)
+    protected ImageView imgViewContacto;
+
+    @InjectView(R.id.btnGuardar)
+    protected Button btnGuardar;
+
+    @InjectView(R.id.btnCancelar)
+    protected Button btnCancelar;
+
     private int request_code = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crear_contacto, container, false);
-        inicializarComponentes(rootView);
+        ButterKnife.inject(this, rootView);
         return rootView;
     }
 
-    private void inicializarComponentes(final View view) {
-        txtNombre = (EditText) view.findViewById(R.id.cmpNombre);
-        txtTelefono = (EditText) view.findViewById(R.id.cmpTelefono);
-        txtEmail = (EditText) view.findViewById(R.id.cmpEmail);
-        txtDireccion = (EditText) view.findViewById(R.id.cmpDireccion);
-        imgViewContacto = (ImageView) view.findViewById(R.id.imgContacto);
-        imgViewContacto.setOnClickListener(this);
-        txtNombre.addTextChangedListener(new TextChangedListener() {
-            @Override
-            public void onTextChanged(CharSequence seq, int i, int i2, int i3) {
-                btnGuardar.setEnabled(!seq.toString().trim().isEmpty());
-            }
-        });
-        btnGuardar = (Button) view.findViewById(R.id.btnGuardar);
-        btnGuardar.setOnClickListener(this);
-        btnCancelar = (Button) view.findViewById(R.id.btnCancelar);
-        btnCancelar.setOnClickListener(this);
-    }
-
-    @Override
+    @OnClick({R.id.btnGuardar, R.id.btnCancelar, R.id.imgContacto})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnGuardar:
@@ -74,6 +77,11 @@ public class CrearContactoFragment extends Fragment implements View.OnClickListe
                 cargarImagen();
                 break;
         }
+    }
+
+    @OnTextChanged(R.id.cmpNombre)
+    public void onTextChanged(CharSequence seq, int i, int i2, int i3) {
+        btnGuardar.setEnabled(!seq.toString().trim().isEmpty());
     }
 
     private void cargarImagen() {

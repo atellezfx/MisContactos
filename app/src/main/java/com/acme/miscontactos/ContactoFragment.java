@@ -14,16 +14,36 @@ import android.widget.TextView;
 import com.acme.miscontactos.entity.Contacto;
 import com.squareup.picasso.Picasso;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
+
 /**
  * Created by alejandro on 6/1/14.
  */
-public class ContactoFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+public class ContactoFragment extends Fragment {
 
-    private FragmentCheckedListener listener;
-    private TextView viewNombre, viewTelefono, viewEmail, viewDireccion;
-    private ImageView ivContactImage;
-    private CheckBox checkBox;
+    @InjectView(R.id.viewNombre)
+    protected TextView viewNombre;
+
+    @InjectView(R.id.viewTelefono)
+    protected TextView viewTelefono;
+
+    @InjectView(R.id.viewEmail)
+    protected TextView viewEmail;
+
+    @InjectView(R.id.viewDireccion)
+    protected TextView viewDireccion;
+
+    @InjectView(R.id.ivContactImage)
+    protected ImageView ivContactImage;
+
+    @InjectView(R.id.checkBox)
+    protected CheckBox checkBox;
+
     private Contacto contactoActual;
+    private FragmentCheckedListener listener;
 
     public static ContactoFragment crearInstancia(Contacto contacto, FragmentCheckedListener listener) {
         ContactoFragment cfrag = new ContactoFragment();
@@ -35,8 +55,8 @@ public class ContactoFragment extends Fragment implements CompoundButton.OnCheck
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.listview_item, container, false);
+        ButterKnife.inject(this, rootView);
         setHasOptionsMenu(true); // Habilitamos el ActionBar de este fragment para tener botones
-        inicializarComponentes(rootView);
         return rootView;
     }
 
@@ -54,31 +74,18 @@ public class ContactoFragment extends Fragment implements CompoundButton.OnCheck
         }
     }
 
-    private void inicializarComponentes(View view) {
-        viewNombre = (TextView) view.findViewById(R.id.viewNombre);
-        viewTelefono = (TextView) view.findViewById(R.id.viewTelefono);
-        viewEmail = (TextView) view.findViewById(R.id.viewEmail);
-        viewDireccion = (TextView) view.findViewById(R.id.viewDireccion);
-        ivContactImage = (ImageView) view.findViewById(R.id.ivContactImage);
-        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-        checkBox.setOnCheckedChangeListener(this);
-        // Al desaparecer el ArrayAdapter por fragments, necesitamos hacer que el fragment
-        // active el CheckBox si el usuario selecciona este contacto
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkBox.toggle();
-            }
-        });
-    }
-
     public Contacto getContactoActual() {
         return contactoActual;
     }
 
-    @Override
+    @OnCheckedChanged(R.id.checkBox)
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         if (listener != null) listener.fragmentChecked(this, isChecked);
+    }
+
+    @OnClick(R.id.listview_item)
+    public void onClick(View view) {
+        checkBox.toggle();
     }
 
     public static interface FragmentCheckedListener {
