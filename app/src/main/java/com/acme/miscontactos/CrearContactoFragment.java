@@ -159,7 +159,7 @@ public class CrearContactoFragment extends Fragment {
                 ContentResolver resolver = getActivity().getContentResolver();
                 resolver.takePersistableUriPermission(uri, takeFlags);
             }
-            Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).fit()
+            Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop()
                     .placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
             // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
             imgViewContacto.setTag(uri);

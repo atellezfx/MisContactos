@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:state_activated="true" android:drawable="@drawable/ficha_activada" />
+    <item android:state_pressed="true" android:drawable="@drawable/ficha_seleccionada" />
+    <item android:drawable="@drawable/ficha_fondo" />
+</selector><!-- From: file:/Users/alejandro/AndroidStudioProjects/MisContactos/cardui/src/main/res/drawable/ficha.xml -->

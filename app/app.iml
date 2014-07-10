@@ -73,6 +73,7 @@
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="ormlite-content-provider-library-1.0.4" level="project" />
+    <orderEntry type="module" module-name="cardui" exported="" />
   </component>
 </module>
 

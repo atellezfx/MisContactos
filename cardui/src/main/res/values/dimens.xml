@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Dimensiones de la Ficha-->
+    <dimen name="ficha_radio_esquina">2dp</dimen>
+    <dimen name="ficha_margen_superior">0dp</dimen>
+    <dimen name="ficha_margen_inferior">0dp</dimen>
+    <dimen name="ficha_margen_izquierdo">0dp</dimen>
+    <dimen name="ficha_margen_derecho">0dp</dimen>
+    <dimen name="altura_contenido_ficha">115dp</dimen>
+    <!--Dimensiones de la sombra de la ficha-->
+    <dimen name="ficha_sombra_altura">3dp</dimen>
+</resources>

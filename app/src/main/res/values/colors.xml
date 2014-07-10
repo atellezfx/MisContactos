@@ -4,4 +4,5 @@
     <color name="fondo_gris">#FFE0E0E0</color>
     <color name="entintado_oscuro">#FFA85F00</color>
     <color name="entintado_claro">#FFFFFFFF</color>
+    <color name="texto_gris_oscuro">#FF5F5F5F</color>
 </resources>

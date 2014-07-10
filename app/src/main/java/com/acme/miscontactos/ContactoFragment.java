@@ -69,7 +69,7 @@ public class ContactoFragment extends Fragment {
             viewEmail.setText(contactoActual.getEmail());
             viewDireccion.setText(contactoActual.getDireccion());
             Picasso.with(getActivity()).load(contactoActual.getImageUri())
-                    .config(Bitmap.Config.ARGB_8888).fit().placeholder(R.drawable.contacto)
+                    .config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop().placeholder(R.drawable.contacto)
                     .error(R.drawable.contacto).into(ivContactImage);
         }
     }

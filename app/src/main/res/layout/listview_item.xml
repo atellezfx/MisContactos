@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="115dp"
-    android:background="@drawable/fondo_contacto"
-    android:id="@+id/listview_item"
-    tools:context="com.acme.miscontactos.ContactoFragment">
+    android:layout_height="wrap_content"
+    tools:context="com.acme.miscontactos.ContactoFragment"
+    android:paddingLeft="4dp"
+    android:paddingTop="2dp"
+    android:paddingRight="4dp"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/listview_item"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/altura_contenido_ficha"
+        style="@style/ficha.layout">
+
+        <ImageView
+            android:layout_width="@dimen/altura_contenido_ficha"
+            android:layout_height="@dimen/altura_contenido_ficha"
+            android:id="@+id/ivContactImage"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/contacto"
+            android:focusable="false" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivContactImage"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/viewNombre"
+                android:focusable="false" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/viewTelefono"
+                android:layout_marginTop="10dp"
+                android:focusable="false"
+                android:textColor="@color/texto_gris_oscuro"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/viewEmail"
+                android:focusable="false"
+                android:textColor="@color/texto_gris_oscuro"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/viewDireccion"
+                android:focusable="false"
+                android:textColor="@color/texto_gris_oscuro"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- No se permite que el usuario de click sobre el CheckBox, la clase CheckableRelativeLayout
+        se encargara se esta asignación para cada contacto de manera independiente -->
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true"
+            android:clickable="false"
+            android:focusable="false" />
+
+    </RelativeLayout>
 
     <ImageView
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:id="@+id/ivContactImage"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/contacto"
-        android:focusable="false" />
+        android:id="@+id/ficha_sombra_imageview"
+        style="@style/ficha.layout_imagen_sombra" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/ivContactImage"
-        android:layout_toLeftOf="@+id/checkBox">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/viewNombre"
-            android:focusable="false" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/viewTelefono"
-            android:layout_marginTop="10dp"
-            android:focusable="false" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/viewEmail"
-            android:focusable="false" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/viewDireccion"
-            android:focusable="false" />
-    </LinearLayout>
-    <!-- No se permite que el usuario de click sobre el CheckBox, la clase CheckableRelativeLayout
-    se encargara se esta asignación para cada contacto de manera independiente -->
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/ivContactImage"
-        android:clickable="false"
-        android:focusable="false" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ficha" />
+
+    <style name="ficha.layout">
+        <item name="android:background">@drawable/ficha</item>
+        <item name="android:layout_marginTop">@dimen/ficha_margen_superior</item>
+        <item name="android:layout_marginBottom">@dimen/ficha_margen_inferior</item>
+        <item name="android:layout_marginLeft">@dimen/ficha_margen_izquierdo</item>
+        <item name="android:layout_marginRight">@dimen/ficha_margen_derecho</item>
+    </style>
+
+    <style name="ficha.layout_imagen_sombra">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/ficha_sombra_altura</item>
+        <item name="android:src">@drawable/ficha_sombra</item>
+    </style>
+
+</resources>
