@@ -62,7 +62,7 @@ public class ContactoFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        // super.onViewCreated(view, savedInstanceState);
         if (contactoActual != null) {
             viewNombre.setText(contactoActual.getNombre());
             viewTelefono.setText(contactoActual.getTelefono());
@@ -71,6 +71,25 @@ public class ContactoFragment extends Fragment {
             Picasso.with(getActivity()).load(contactoActual.getImageUri())
                     .config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop().placeholder(R.drawable.contacto)
                     .error(R.drawable.contacto).into(ivContactImage);
+        } else {
+            viewNombre.setText(savedInstanceState.getString("viewNombre.text"));
+            viewTelefono.setText(savedInstanceState.getString("viewTelefono.text"));
+            viewEmail.setText(savedInstanceState.getString("viewEmail.text"));
+            viewDireccion.setText(savedInstanceState.getString("viewDireccion.text"));
+            Picasso.with(getActivity()).load(savedInstanceState.getString("ivContactImage.uri"))
+                    .config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop().placeholder(R.drawable.contacto)
+                    .error(R.drawable.contacto).into(ivContactImage);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (contactoActual != null) {
+            outState.putString("viewNombre.text", contactoActual.getNombre());
+            outState.putString("viewTelefono.text", contactoActual.getTelefono());
+            outState.putString("viewEmail.text", contactoActual.getEmail());
+            outState.putString("viewDireccion.text", contactoActual.getDireccion());
+            outState.putString("ivContactImage.uri", contactoActual.getImageUri());
         }
     }
 

@@ -77,7 +77,8 @@ public class MainActivity extends Activity { // Ya no se usa el OrmLiteBaseActiv
     private void inicializaComponentes() {
         View view = findViewById(R.id.rootPane);
         String viewTag = String.valueOf(view.getTag());
-        if (viewTag.equals("phone")) cargarFragmento(getFragmentoLista());
+        // Verdadero para los TAGs "phone" y "phone_landscape"
+        if (viewTag.startsWith("phone")) cargarFragmento(getFragmentoLista());
     }
 
     private void inicializaActionBar() {
