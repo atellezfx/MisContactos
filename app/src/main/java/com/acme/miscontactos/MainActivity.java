@@ -8,6 +8,11 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.gesture.Gesture;
+import android.gesture.GestureLibraries;
+import android.gesture.GestureLibrary;
+import android.gesture.GestureOverlayView;
+import android.gesture.Prediction;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -24,11 +29,16 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTouch;
 
-public class MainActivity extends Activity { // Ya no se usa el OrmLiteBaseActivity al usar ContentProvider
+import static android.gesture.GestureOverlayView.OnGesturePerformedListener;
+
+// Ya no se usa el OrmLiteBaseActivity al usar ContentProvider
+public class MainActivity extends Activity implements OnGesturePerformedListener {
 
     @InjectView(R.id.btn_crear_contacto)
     protected ImageButton btnCrearContacto;
@@ -44,6 +54,7 @@ public class MainActivity extends Activity { // Ya no se usa el OrmLiteBaseActiv
 
     private CrearContactoFragment fragmentoCrear;
     private ListaContactosFragment fragmentoLista;
+    private GestureLibrary gestureLib;
     private final int CONFIG_REQUEST_CODE = 0;
     private ContactReceiver receiver;
     private HttpServiceBroker broker;
@@ -52,10 +63,21 @@ public class MainActivity extends Activity { // Ya no se usa el OrmLiteBaseActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        View overlayView = inicializarVista();
+        setContentView(overlayView);
         ButterKnife.inject(this);
         inicializaActionBar();
         inicializaComponentes();
+    }
+
+    private View inicializarVista() {
+        GestureOverlayView overlay = new GestureOverlayView(this);
+        View inflate = getLayoutInflater().inflate(R.layout.activity_main, null);
+        overlay.addView(inflate);
+        overlay.addOnGesturePerformedListener(this);
+        gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
+        gestureLib.load();
+        return overlay;
     }
 
     @Override
@@ -137,6 +159,17 @@ public class MainActivity extends Activity { // Ya no se usa el OrmLiteBaseActiv
             case R.id.btn_sincronizar:
                 notificarSincronizacion();
                 break;
+        }
+    }
+
+    @Override
+    public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
+        ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
+        for (Prediction pred : predictions) {
+            if (pred.score > 1.0) {
+                if (pred.name.equals("eliminar")) notificarEliminarContactos();
+                else if (pred.name.equals("sincronizar")) notificarSincronizacion();
+            }
         }
     }
 
