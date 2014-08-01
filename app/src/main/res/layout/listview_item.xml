@@ -9,7 +9,8 @@
     android:paddingLeft="4dp"
     android:paddingTop="2dp"
     android:paddingRight="4dp"
-    android:clickable="true">
+    android:clickable="true"
+    android:animateLayoutChanges="true">
 
     <RelativeLayout
         android:id="@+id/listview_item"

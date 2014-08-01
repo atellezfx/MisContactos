@@ -11,6 +11,7 @@
         android:id="@+id/lista_fragmentos_contacto"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true" />
 
 </ScrollView>
