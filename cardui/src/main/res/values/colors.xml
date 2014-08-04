@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_ficha_fondo">#FFFFFFFF</color>
-    <color name="color_ficha_seleccionada">#10000000</color>
+    <color name="color_ficha_presionada">#10000000</color>
     <color name="color_ficha_activada">#ADE1F4</color>
 </resources>

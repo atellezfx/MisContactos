@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.acme.miscontactos.ListaContactosFragment"
-    android:background="@color/fondo_gris">
-
-    <LinearLayout
-        android:id="@+id/lista_fragmentos_contacto"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true" />
-
-</ScrollView>
+    android:background="@color/fondo_gris"
+    android:divider="@null"
+    android:dividerHeight="2dp"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:id="@+id/fragment_listview" />

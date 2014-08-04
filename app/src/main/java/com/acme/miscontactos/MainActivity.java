@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         View inflate = getLayoutInflater().inflate(R.layout.activity_main, null);
         overlay.addView(inflate);
         overlay.addOnGesturePerformedListener(this);
+        overlay.setGestureVisible(false);
         gestureLib = GestureLibraries.fromRawResource(this, R.raw.gestures);
         gestureLib.load();
         return overlay;

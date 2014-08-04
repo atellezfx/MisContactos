@@ -2,8 +2,6 @@ package com.acme.miscontactos;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,17 +9,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
 import com.acme.miscontactos.entity.ContactoContract;
 import com.acme.miscontactos.entity.JSONBean;
 import com.acme.miscontactos.net.HttpServiceBroker;
-import com.acme.miscontactos.util.ApplicationContextProvider;
 import com.acme.miscontactos.util.AsyncTaskListener;
+import com.acme.miscontactos.util.ContactArrayAdapter;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DataChangeTracker;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
@@ -29,7 +29,9 @@ import com.acme.miscontactos.util.MenuBarActionReceiver;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.acme.miscontactos.ContactoFragment.FragmentCheckedListener;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 import static com.acme.miscontactos.util.DataChangeTracker.StoredRecord;
 import static com.acme.miscontactos.util.MenuBarActionReceiver.MenuBarActionListener;
 
@@ -37,17 +39,27 @@ import static com.acme.miscontactos.util.MenuBarActionReceiver.MenuBarActionList
  * Created by alejandro on 5/2/14.
  */
 public class ListaContactosFragment extends Fragment
-        implements MenuBarActionListener, FragmentCheckedListener, AsyncTaskListener<List<String>> {
+        implements MenuBarActionListener, AsyncTaskListener<List<String>> {
+
+    private static final String LOG_TAG = ListaContactosFragment.class.getSimpleName();
+
+    @InjectView(R.id.fragment_listview)
+    protected ListView contactsListView;
 
     private MenuBarActionReceiver receiver;
-    private List<ContactoFragment> fragmentosSeleccionados = new ArrayList<ContactoFragment>();
+    private ContactArrayAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lista_contactos, container, false);
-        inicializarComponentes(savedInstanceState);
+        ButterKnife.inject(this, rootView);
         setHasOptionsMenu(true); // Habilita el ActionBAr de este fragment para tener botones
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        inicializarComponentes(getActivity(), savedInstanceState);
     }
 
     @Override
@@ -64,30 +76,23 @@ public class ListaContactosFragment extends Fragment
         getActivity().unregisterReceiver(receiver);
     }
 
-    private void inicializarComponentes(Bundle savedInstanceState) {
+    private void inicializarComponentes(Context context, Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            Context context = ApplicationContextProvider.getContext();
             ContentResolver resolver = context.getContentResolver();
             Cursor cursor = resolver.query(ContactoContract.CONTENT_URI, null, null, null, null);
             List<Contacto> contactos = Contacto.crearListaDeCursor(cursor);
-            for (Contacto contacto : contactos) {
-                ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
-                transaction.add(R.id.lista_fragmentos_contacto, cfrag);
-            }
+            // El adapter será el encargado de ir creado los fragmentos conforme se necesiten, y "reciclando"
+            // los recursos (layouts) cuando sea necesario
+            listAdapter = new ContactArrayAdapter(context, R.layout.listview_item, contactos);
+            contactsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            contactsListView.setAdapter(listAdapter);
             cursor.close();
-            transaction.commit();
         }
     }
 
     @Override
     public void contactoAgregado(Contacto contacto) {
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        ContactoFragment cfrag = ContactoFragment.crearInstancia(contacto, this);
-        transaction.add(R.id.lista_fragmentos_contacto, cfrag);
-        transaction.commit();
+        listAdapter.add(contacto);
     }
 
     @Override
@@ -100,19 +105,19 @@ public class ListaContactosFragment extends Fragment
         builder.setPositiveButton(i18n(R.string.mesg_positive_dialog_option), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                FragmentManager manager = getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
+                SparseBooleanArray array = contactsListView.getCheckedItemPositions();
                 ArrayList<Contacto> seleccion = new ArrayList<Contacto>();
-                for (ContactoFragment cfrag : fragmentosSeleccionados) {
-                    seleccion.add(cfrag.getContactoActual());
-                    transaction.remove(cfrag);
+                for (int j = 0; j < array.size(); j++) {
+                    // Posición del contacto en el adaptador
+                    int posicion = array.keyAt(j);
+                    if (array.valueAt(j)) seleccion.add(listAdapter.getItem(posicion));
                 }
-                fragmentosSeleccionados.clear();
-                transaction.commit();
+                for (Contacto con : seleccion) listAdapter.remove(con);
                 Intent intent = new Intent(ContactReceiver.FILTER_NAME);
                 intent.putExtra("operacion", ContactReceiver.CONTACTO_ELIMINADO);
                 intent.putParcelableArrayListExtra("datos", seleccion);
                 getActivity().sendBroadcast(intent);
+                contactsListView.clearChoices();
             }
         });
         builder.setNegativeButton(i18n(R.string.mesg_negative_dialog_option), null);
@@ -170,12 +175,6 @@ public class ListaContactosFragment extends Fragment
         for (StoredRecord record : createList) datos.add(record.getData());
         intent.putParcelableArrayListExtra("datos", datos);
         getActivity().sendBroadcast(intent);
-    }
-
-    @Override
-    public void fragmentChecked(ContactoFragment cfrag, boolean isChecked) {
-        if (isChecked) fragmentosSeleccionados.add(cfrag);
-        else fragmentosSeleccionados.remove(cfrag);
     }
 
     @Override

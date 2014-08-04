@@ -9,15 +9,17 @@
     android:paddingLeft="4dp"
     android:paddingTop="2dp"
     android:paddingRight="4dp"
-    android:clickable="true"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:focusable="false"
+    android:id="@+id/rootLayout">
 
     <RelativeLayout
         android:id="@+id/listview_item"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/altura_contenido_ficha"
-        style="@style/ficha.layout">
+        style="@style/ficha.layout"
+        android:focusable="false">
 
         <ImageView
             android:layout_width="@dimen/altura_contenido_ficha"
@@ -33,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ivContactImage"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:focusable="false">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -72,22 +75,10 @@
 
         </LinearLayout>
 
-        <!-- No se permite que el usuario de click sobre el CheckBox, la clase CheckableRelativeLayout
-        se encargara se esta asignación para cada contacto de manera independiente -->
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true"
-            android:clickable="false"
-            android:focusable="false" />
-
     </RelativeLayout>
 
     <ImageView
+        android:focusable="false"
         android:id="@+id/ficha_sombra_imageview"
         style="@style/ficha.layout_imagen_sombra" />
 
