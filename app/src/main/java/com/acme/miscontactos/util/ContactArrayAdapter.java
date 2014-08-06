@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +39,8 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
         setNotifyOnChange(true);
     }
 
+    private int posicionMasAlta = 4;
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -52,6 +56,12 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
         } else {
             holder = (ViewHolder) row.getTag();
         }
+        if (position > posicionMasAlta) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.push_up_in);
+            animation.setDuration(800);
+            row.startAnimation(animation);
+            posicionMasAlta = position;
+        } else if (position <= 4) posicionMasAlta = 4;
         inicializarContenido(row, holder, contactos.get(position));
         return row;
     }

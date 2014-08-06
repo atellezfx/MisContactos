@@ -10,4 +10,5 @@
     android:dividerHeight="2dp"
     android:focusable="true"
     android:descendantFocusability="blocksDescendants"
+    android:animateLayoutChanges="true"
     android:id="@+id/fragment_listview" />
