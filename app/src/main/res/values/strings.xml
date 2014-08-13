@@ -48,4 +48,12 @@
     <string name="label_btn_remove_contact">Remove</string>
     <string name="label_btn_sync_contacts">Synchronize</string>
 
+    <!--Recursos para el menú de compartir contactos-->
+    <string name="share_title">Share via</string>
+    <string-array name="share_options">
+        <item>QR Code</item>
+        <item>Bluetooth</item>
+        <item>Other options</item>
+    </string-array>
+
 </resources>

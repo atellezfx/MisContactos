@@ -22,6 +22,14 @@
         android:focusable="false">
 
         <ImageView
+            android:id="@+id/checkMark"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/checked" />
+
+        <ImageView
             android:layout_width="@dimen/altura_contenido_ficha"
             android:layout_height="@dimen/altura_contenido_ficha"
             android:id="@+id/ivContactImage"

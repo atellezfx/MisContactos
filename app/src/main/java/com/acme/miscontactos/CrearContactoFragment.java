@@ -12,17 +12,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.acme.miscontactos.entity.Contacto;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -50,21 +53,21 @@ public class CrearContactoFragment extends Fragment {
     protected ImageView imgViewContacto;
 
     @InjectView(R.id.btnGuardar)
-    protected Button btnGuardar;
+    protected ImageButton btnGuardar;
 
-    @InjectView(R.id.btnCancelar)
-    protected Button btnCancelar;
-
-    private int request_code = 1;
+    private static final String LOG_TAG = CrearContactoFragment.class.getSimpleName();
+    private int LOAD_IMAGE_REQUEST_CODE = 0;
+    private int IMPORT_QR_REQUEST_CODE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crear_contacto, container, false);
         ButterKnife.inject(this, rootView);
+        btnGuardar.setEnabled(false);
         return rootView;
     }
 
-    @OnClick({R.id.btnGuardar, R.id.btnCancelar, R.id.imgContacto})
+    @OnClick({R.id.btnGuardar, R.id.btnCancelar, R.id.btnImportar, R.id.imgContacto})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnGuardar:
@@ -72,6 +75,9 @@ public class CrearContactoFragment extends Fragment {
                 break;
             case R.id.btnCancelar:
                 limpiarCampos();
+                break;
+            case R.id.btnImportar:
+                importarCodigoQR();
                 break;
             case R.id.imgContacto:
                 cargarImagen();
@@ -97,7 +103,7 @@ public class CrearContactoFragment extends Fragment {
             intent.addCategory(Intent.CATEGORY_OPENABLE);
         }
         intent.setType("image/*");
-        startActivityForResult(intent, request_code);
+        startActivityForResult(intent, LOAD_IMAGE_REQUEST_CODE);
     }
 
     private void guardarContacto(View view) {
@@ -148,21 +154,41 @@ public class CrearContactoFragment extends Fragment {
         txtNombre.requestFocus();
     }
 
+    private void importarCodigoQR() {
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, IMPORT_QR_REQUEST_CODE);
+    }
+
     @Override
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == request_code) {
-            Uri uri = data.getData();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                int takeFlags = data.getFlags() &
-                        (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                ContentResolver resolver = getActivity().getContentResolver();
-                resolver.takePersistableUriPermission(uri, takeFlags);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == LOAD_IMAGE_REQUEST_CODE) {
+                Uri uri = data.getData();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    int takeFlags = data.getFlags() &
+                            (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    ContentResolver resolver = getActivity().getContentResolver();
+                    resolver.takePersistableUriPermission(uri, takeFlags);
+                }
+                Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop()
+                        .placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
+                // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
+                imgViewContacto.setTag(uri);
+            } else if (requestCode == IMPORT_QR_REQUEST_CODE) {
+                try {
+                    String result = data.getStringExtra("SCAN_RESULT");
+                    Contacto bean = MainActivity.getObjectMapper().readValue(result, Contacto.class);
+                    txtNombre.setText(bean.getNombre());
+                    txtTelefono.setText(bean.getTelefono());
+                    txtEmail.setText(bean.getEmail());
+                    txtDireccion.setText(bean.getDireccion());
+                    txtNombre.requestFocus();
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, e.getLocalizedMessage(), e);
+                }
             }
-            Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop()
-                    .placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
-            // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
-            imgViewContacto.setTag(uri);
         }
     }
 

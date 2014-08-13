@@ -25,12 +25,14 @@ import com.acme.miscontactos.util.ContactArrayAdapter;
 import com.acme.miscontactos.util.ContactReceiver;
 import com.acme.miscontactos.util.DataChangeTracker;
 import com.acme.miscontactos.util.MenuBarActionReceiver;
+import com.acme.miscontactos.util.ShareOptionsBridge;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnItemLongClick;
 
 import static com.acme.miscontactos.util.DataChangeTracker.StoredRecord;
 import static com.acme.miscontactos.util.MenuBarActionReceiver.MenuBarActionListener;
@@ -148,6 +150,17 @@ public class ListaContactosFragment extends Fragment
         doPut(updateList);
         doDelete(deleteList);
         tracker.clearRecords();
+    }
+
+    @OnItemLongClick(R.id.fragment_listview)
+    public boolean onItemLongClick(int position) {
+        ShareOptionsBridge bridge = new ShareOptionsBridge(listAdapter, getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.share_title);
+        builder.setItems(R.array.share_options, bridge.getDialogOnClickListener(position));
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        return true;
     }
 
     private void doDelete(ArrayList<StoredRecord> deleteList) {

@@ -150,9 +150,13 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         switch (view.getId()) {
             case R.id.btn_crear_contacto:
                 cargarFragmento(getFragmentoCrear());
+                btnEliminarContactos.setVisibility(View.INVISIBLE);
+                btnSincronizar.setVisibility(View.INVISIBLE);
                 break;
             case R.id.btn_lista_contactos:
                 cargarFragmento(getFragmentoLista());
+                btnEliminarContactos.setVisibility(View.VISIBLE);
+                btnSincronizar.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_eliminar_contactos:
                 notificarEliminarContactos();
