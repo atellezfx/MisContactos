@@ -5,7 +5,7 @@ android {
     buildToolsVersion '19.1.0'
 
     defaultConfig {
-        applicationId "com.acme.cardui"
+        applicationId "mx.vainiyasoft.cardui"
         minSdkVersion 16
         targetSdkVersion 19
         versionCode 1

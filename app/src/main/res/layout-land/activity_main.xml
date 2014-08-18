@@ -8,7 +8,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.acme.miscontactos.CrearContactoFragment"
+        android:name="mx.vainiyasoft.agenda.CrearContactoFragment"
         android:id="@+id/fragment"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

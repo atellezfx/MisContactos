@@ -2,7 +2,7 @@
 # generated on 2014/06/26 09:08:44
 #
 # --table-start--
-dataClass=com.acme.miscontactos.entity.Contacto
+dataClass=mx.vainiyasoft.agenda.entity.Contacto
 tableName=contacto
 # --table-fields-start--
 # --field-start--
@@ -41,7 +41,7 @@ fieldName=md5
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.acme.miscontactos.entity.JSONBean
+dataClass=mx.vainiyasoft.agenda.entity.JSONBean
 tableName=jsonbean
 # --table-fields-start--
 # --field-start--

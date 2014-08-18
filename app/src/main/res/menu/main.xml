@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.acme.miscontactos.MainActivity">
+    tools:context="mx.vainiyasoft.agenda.MainActivity">
 
     <item
         android:id="@+id/action_settings"

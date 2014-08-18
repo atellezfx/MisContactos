@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.acme.miscontactos">
+    package="mx.vainiyasoft.agenda">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".util.ApplicationContextProvider"
+        android:backupAgent=".util.AgendaBackupAgent"
+        android:name="mx.vainiyasoft.agenda.util.ApplicationContextProvider"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
+        <!--TODO: Coloca tu llave del servicio de respaldos de android con tu propio paquete-->
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="COLOCA AQUI LA LLAVE DE RESPALDOS PARA TU PROPIO PAQUETE" />
+
+        <activity
+            android:name="mx.vainiyasoft.agenda.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ConfiguracionActivity"
+            android:name="mx.vainiyasoft.agenda.ConfiguracionActivity"
             android:label="@string/action_settings" />
 
         <service
-            android:name=".net.HttpPostService"
+            android:name="mx.vainiyasoft.agenda.net.HttpPostService"
             android:enabled="true" />
         <service
-            android:name=".net.HttpGetService"
+            android:name="mx.vainiyasoft.agenda.net.HttpGetService"
             android:enabled="true" />
         <service
-            android:name=".net.HttpPutService"
+            android:name="mx.vainiyasoft.agenda.net.HttpPutService"
             android:enabled="true" />
         <service
-            android:name=".net.HttpDeleteService"
+            android:name="mx.vainiyasoft.agenda.net.HttpDeleteService"
             android:enabled="true" />
 
         <provider
-            android:name=".entity.ContactoProvider"
-            android:authorities="com.acme.miscontactos"
+            android:name="mx.vainiyasoft.agenda.entity.ContactoProvider"
+            android:authorities="mx.vainiyasoft.agenda"
             android:enabled="true"
             android:exported="false" />
 
-        <receiver android:name=".widgets.ContadorContactosWidget">
-            <intent-filter>
+        <receiver android:name="mx.vainiyasoft.agenda.widgets.ContadorContactosWidget">
+        <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
