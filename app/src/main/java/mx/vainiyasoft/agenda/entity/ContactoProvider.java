@@ -4,7 +4,7 @@ import com.tojc.ormlite.android.OrmLiteSimpleContentProvider;
 import com.tojc.ormlite.android.framework.MatcherController;
 import com.tojc.ormlite.android.framework.MimeTypeVnd;
 
-import mx.vainiyasoft.agenda.util.DatabaseHelper;
+import mx.vainiyasoft.agenda.data.DatabaseHelper;
 
 /**
  * Created by alejandro on 6/23/14.

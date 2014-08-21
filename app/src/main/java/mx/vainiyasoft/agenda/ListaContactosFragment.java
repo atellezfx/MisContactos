@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +21,13 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemLongClick;
+import mx.vainiyasoft.agenda.data.ContactArrayAdapter;
+import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.data.DataChangeTracker;
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.entity.ContactoContract;
 import mx.vainiyasoft.agenda.entity.JSONBean;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
-import mx.vainiyasoft.agenda.util.AsyncTaskListener;
-import mx.vainiyasoft.agenda.util.ContactArrayAdapter;
-import mx.vainiyasoft.agenda.util.ContactReceiver;
-import mx.vainiyasoft.agenda.util.DataChangeTracker;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 import mx.vainiyasoft.agenda.util.ShareOptionsBridge;
 
@@ -37,7 +35,7 @@ import mx.vainiyasoft.agenda.util.ShareOptionsBridge;
  * Created by alejandro on 5/2/14.
  */
 public class ListaContactosFragment extends Fragment
-        implements MenuBarActionReceiver.MenuBarActionListener, AsyncTaskListener<List<String>> {
+        implements MenuBarActionReceiver.MenuBarActionListener {
 
     private static final String LOG_TAG = ListaContactosFragment.class.getSimpleName();
 
@@ -184,13 +182,6 @@ public class ListaContactosFragment extends Fragment
         for (DataChangeTracker.StoredRecord record : createList) datos.add(record.getData());
         intent.putParcelableArrayListExtra("datos", datos);
         getActivity().sendBroadcast(intent);
-    }
-
-    @Override
-    public void processResult(List<String> result) {
-        for (String cad : result)
-            Toast.makeText(getActivity(), i18n(R.string.mesg_toast_sync_confirm, cad),
-                    Toast.LENGTH_SHORT).show();
     }
 
     private String i18n(int resourceId, Object... formatArgs) {

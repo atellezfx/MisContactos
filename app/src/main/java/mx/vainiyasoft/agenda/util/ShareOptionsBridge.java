@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import mx.vainiyasoft.agenda.MainActivity;
+import mx.vainiyasoft.agenda.data.ContactArrayAdapter;
 import mx.vainiyasoft.agenda.entity.Contacto;
 
 import static android.content.DialogInterface.OnClickListener;

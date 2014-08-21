@@ -1,4 +1,4 @@
-package mx.vainiyasoft.agenda.util;
+package mx.vainiyasoft.agenda.data;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -18,6 +18,8 @@ import java.util.Arrays;
 
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.entity.ContactoContract;
+import mx.vainiyasoft.agenda.util.ApplicationContextProvider;
+import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 import mx.vainiyasoft.agenda.widgets.ContadorContactosWidget;
 
 /**

@@ -1,4 +1,4 @@
-package mx.vainiyasoft.agenda.util;
+package mx.vainiyasoft.agenda.data;
 
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 

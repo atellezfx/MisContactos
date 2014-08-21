@@ -6,6 +6,28 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!--Si deseas que las fotos se mantengan privadas al contexto de la aplicación, puedes-->
+    <!--utilizar el directorio proporcionado por getExternalFilesDir(). En Android 4.3 y-->
+    <!--anteriores, escribir en este directorio se requería el permiso WRITE_EXTERNAL_STORAGE-->
+    <!--Comenzando con Android 4.4, el permiso ya no es requerido dedibo a que el directorio-->
+    <!--no puede ser accedido por otras apps, dando como resultado que el permiso únicamente-->
+    <!--se solicite en versiones Android 4.3 y anteriores, de la siguiente manera:-->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+    <!--Si es escencial para la app el que el dispositivo cuente con cámara, entonce se deberá-->
+    <!--restringir la visibilidad en Google Play para sólo dispositivos con cámara-->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <!--Por el contrario si la app usa, pero no requiere de una cámara para poder funcionar, entonces-->
+    <!--se deberá colocar required="false". HAciendo esto, Google Play permitirá que se instale-->
+    <!--esta app en dispositivos que no cuenten con cámara. Por tanto es responsabilidad del-->
+    <!--desarrollador el veririficar la existencia de la cámara en tiempo de ejecución-->
+    <!--llamando al método hasSystemFeature(PackageManager.FEATURE_CAMERA)-->
+
     <application
         android:backupAgent=".util.AgendaBackupAgent"
         android:name="mx.vainiyasoft.agenda.util.ApplicationContextProvider"
@@ -23,7 +45,7 @@
             android:name="mx.vainiyasoft.agenda.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -52,7 +74,7 @@
             android:exported="false" />
 
         <receiver android:name="mx.vainiyasoft.agenda.widgets.ContadorContactosWidget">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 

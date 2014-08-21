@@ -1,4 +1,4 @@
-package mx.vainiyasoft.agenda.util;
+package mx.vainiyasoft.agenda.data;
 
 import android.content.Context;
 import android.util.Log;

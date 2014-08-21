@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnTouch;
+import mx.vainiyasoft.agenda.data.ContactReceiver;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
-import mx.vainiyasoft.agenda.util.ContactReceiver;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 
 import static android.gesture.GestureOverlayView.OnGesturePerformedListener;

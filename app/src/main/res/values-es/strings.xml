@@ -55,4 +55,11 @@
         <item>Otras opciones</item>
     </string-array>
 
+    <!--Recursos para el menú de seleccionar foto-->
+    <string name="select_picture_title">Selecciona una opción</string>
+    <string-array name="select_picture_options">
+        <item>Cámara</item>
+        <item>Librería</item>
+    </string-array>
+
 </resources>

@@ -19,9 +19,9 @@ import java.io.IOException;
 
 import mx.vainiyasoft.agenda.MainActivity;
 import mx.vainiyasoft.agenda.R;
+import mx.vainiyasoft.agenda.data.ContactReceiver;
 import mx.vainiyasoft.agenda.entity.JSONBean;
 import mx.vainiyasoft.agenda.util.ApplicationContextProvider;
-import mx.vainiyasoft.agenda.util.ContactReceiver;
 import mx.vainiyasoft.agenda.util.NotificationController;
 
 /**
