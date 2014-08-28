@@ -130,9 +130,15 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
 
     private void cargarFragmento(Fragment fragmento) {
         FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.contenedor, fragmento);
-        transaction.commit();
+        FragmentTransaction ft = manager.beginTransaction();
+        // Asignamos el valor de transition para disparar la animación correcta
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(R.id.contenedor, fragmento);
+        // Agregamos esta transacción al "back stack". Esto significa que la transacción
+        // será recordada después de que haya sido aceptada (commit), y podrá ser
+        // ejecutada en reversa después cuando se obtenga del stack.
+        ft.addToBackStack("pantallas");
+        ft.commit();
     }
 
     @OnTouch({R.id.btn_crear_contacto, R.id.btn_lista_contactos, R.id.btn_eliminar_contactos, R.id.btn_sincronizar})

@@ -1,7 +1,6 @@
 package mx.vainiyasoft.agenda;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,18 +22,16 @@ import butterknife.InjectView;
 import butterknife.OnItemLongClick;
 import mx.vainiyasoft.agenda.data.ContactArrayAdapter;
 import mx.vainiyasoft.agenda.data.ContactReceiver;
-import mx.vainiyasoft.agenda.data.DataChangeTracker;
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.entity.ContactoContract;
-import mx.vainiyasoft.agenda.entity.JSONBean;
-import mx.vainiyasoft.agenda.net.HttpServiceBroker;
+import mx.vainiyasoft.agenda.net.NetworkBridge;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 import mx.vainiyasoft.agenda.util.ShareOptionsBridge;
 
 /**
  * Created by alejandro on 5/2/14.
  */
-public class ListaContactosFragment extends Fragment
+public class ListaContactosFragment extends BaseFragment
         implements MenuBarActionReceiver.MenuBarActionListener {
 
     private static final String LOG_TAG = ListaContactosFragment.class.getSimpleName();
@@ -122,28 +119,8 @@ public class ListaContactosFragment extends Fragment
 
     @Override
     public void sincronizarDatos() {
-        DataChangeTracker tracker = new DataChangeTracker(getActivity());
-        ArrayList<DataChangeTracker.StoredRecord> allRecords = tracker.retrieveRecords();
-        ArrayList<DataChangeTracker.StoredRecord> createList = new ArrayList<DataChangeTracker.StoredRecord>();
-        ArrayList<DataChangeTracker.StoredRecord> deleteList = new ArrayList<DataChangeTracker.StoredRecord>();
-        ArrayList<DataChangeTracker.StoredRecord> updateList = new ArrayList<DataChangeTracker.StoredRecord>();
-        for (DataChangeTracker.StoredRecord record : allRecords) {
-            switch (record.getType()) {
-                case DataChangeTracker.StoredRecord.TYPE_CREATE:
-                    createList.add(record);
-                    break;
-                case DataChangeTracker.StoredRecord.TYPE_DELETE:
-                    deleteList.add(record);
-                    break;
-                case DataChangeTracker.StoredRecord.TYPE_UPDATE:
-                    updateList.add(record);
-                    break;
-            }
-        }
-        doPost(createList);
-        doPut(updateList);
-        doDelete(deleteList);
-        tracker.clearRecords();
+        NetworkBridge bridge = new NetworkBridge(getActivity());
+        bridge.sincronizarDatos();
     }
 
     @OnItemLongClick(R.id.fragment_listview)
@@ -155,33 +132,6 @@ public class ListaContactosFragment extends Fragment
         AlertDialog dialog = builder.create();
         dialog.show();
         return true;
-    }
-
-    private void doDelete(ArrayList<DataChangeTracker.StoredRecord> deleteList) {
-        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
-        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_DELETE_METHOD);
-        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
-        for (DataChangeTracker.StoredRecord record : deleteList) datos.add(record.getData());
-        intent.putParcelableArrayListExtra("datos", datos);
-        getActivity().sendBroadcast(intent);
-    }
-
-    private void doPut(ArrayList<DataChangeTracker.StoredRecord> updateList) {
-        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
-        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_PUT_METHOD);
-        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
-        for (DataChangeTracker.StoredRecord record : updateList) datos.add(record.getData());
-        intent.putParcelableArrayListExtra("datos", datos);
-        getActivity().sendBroadcast(intent);
-    }
-
-    private void doPost(ArrayList<DataChangeTracker.StoredRecord> createList) {
-        Intent intent = new Intent(HttpServiceBroker.FILTER_NAME);
-        intent.putExtra("metodo_http", HttpServiceBroker.HTTP_POST_METHOD);
-        ArrayList<JSONBean> datos = new ArrayList<JSONBean>();
-        for (DataChangeTracker.StoredRecord record : createList) datos.add(record.getData());
-        intent.putParcelableArrayListExtra("datos", datos);
-        getActivity().sendBroadcast(intent);
     }
 
     private String i18n(int resourceId, Object... formatArgs) {

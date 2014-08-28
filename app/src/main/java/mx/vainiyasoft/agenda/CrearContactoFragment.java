@@ -3,7 +3,6 @@ package mx.vainiyasoft.agenda;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,7 +35,7 @@ import mx.vainiyasoft.agenda.util.SelectPictureBridge;
 /**
  * Created by alejandro on 5/2/14.
  */
-public class CrearContactoFragment extends Fragment {
+public class CrearContactoFragment extends BaseFragment {
 
     @InjectView(R.id.cmpNombre)
     protected EditText txtNombre;
