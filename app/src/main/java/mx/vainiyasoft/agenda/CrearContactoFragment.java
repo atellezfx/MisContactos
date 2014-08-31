@@ -3,7 +3,6 @@ package mx.vainiyasoft.agenda;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -30,6 +29,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import mx.vainiyasoft.agenda.data.ContactReceiver;
 import mx.vainiyasoft.agenda.entity.Contacto;
+import mx.vainiyasoft.agenda.util.PhotoCopier;
 import mx.vainiyasoft.agenda.util.SelectPictureBridge;
 
 /**
@@ -159,17 +159,12 @@ public class CrearContactoFragment extends BaseFragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case LOAD_IMAGE_REQUEST_CODE:
-                    Uri uri = data.getData();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        int takeFlags = data.getFlags() &
-                                (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        ContentResolver resolver = getActivity().getContentResolver();
-                        resolver.takePersistableUriPermission(uri, takeFlags);
-                    }
-                    Picasso.with(getActivity()).load(uri).config(Bitmap.Config.ARGB_8888).resize(800, 800).centerCrop()
-                            .placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
+                    PhotoCopier copier = new PhotoCopier(getActivity());
+                    Uri imgFileUri = copier.copyImageUri(data.getData());
+                    Picasso.with(getActivity()).load(imgFileUri).config(Bitmap.Config.ARGB_8888).resize(800, 800)
+                            .centerCrop().placeholder(R.drawable.contacto).error(R.drawable.contacto).into(imgViewContacto);
                     // Utilizamos el atributo TAG para almacenar la Uri al archivo seleccionado
-                    imgViewContacto.setTag(uri);
+                    imgViewContacto.setTag(imgFileUri);
                     break;
                 case IMPORT_QR_REQUEST_CODE:
                     try {
