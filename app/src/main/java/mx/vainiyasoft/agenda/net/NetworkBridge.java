@@ -21,7 +21,7 @@ public class NetworkBridge {
 
     public void sincronizarDatos() {
         DataChangeTracker tracker = new DataChangeTracker(activity);
-        ArrayList<DataChangeTracker.StoredRecord> allRecords = tracker.retrieveRecords();
+        ArrayList<DataChangeTracker.StoredRecord> allRecords = tracker.retrieveStoredRecords();
         ArrayList<DataChangeTracker.StoredRecord> createList = new ArrayList<DataChangeTracker.StoredRecord>();
         ArrayList<DataChangeTracker.StoredRecord> deleteList = new ArrayList<DataChangeTracker.StoredRecord>();
         ArrayList<DataChangeTracker.StoredRecord> updateList = new ArrayList<DataChangeTracker.StoredRecord>();
@@ -41,7 +41,7 @@ public class NetworkBridge {
         doPost(createList);
         doPut(updateList);
         doDelete(deleteList);
-        tracker.clearRecords();
+        tracker.clearStoredRecords();
     }
 
     private void doDelete(ArrayList<DataChangeTracker.StoredRecord> deleteList) {

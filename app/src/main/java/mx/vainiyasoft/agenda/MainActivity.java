@@ -15,6 +15,7 @@ import android.gesture.GestureLibrary;
 import android.gesture.GestureOverlayView;
 import android.gesture.Prediction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import butterknife.OnTouch;
 import mx.vainiyasoft.agenda.data.ContactReceiver;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
+import mx.vainiyasoft.agenda.util.SweeperTask;
 
 import static android.gesture.GestureOverlayView.OnGesturePerformedListener;
 
@@ -104,6 +106,14 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         unregisterReceiver(broker);
     }
 
+    @Override
+    protected void onStop() {
+        Handler handler = new Handler();
+        SweeperTask task = new SweeperTask(this);
+        handler.post(task);
+        super.onStop();
+    }
+
     private void inicializaComponentes() {
         View view = findViewById(R.id.rootPane);
         String viewTag = String.valueOf(view.getTag());
@@ -113,7 +123,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
 
     private void inicializaActionBar() {
         actionBar = getActionBar();
-        actionBar.setHomeButtonEnabled(false);
+        // actionBar.setHomeButtonEnabled(false);
     }
 
     //<editor-fold desc="METODOS GET DE INICIALIZACION BAJO DEMANDA (LAZY INITIALIZATION)">

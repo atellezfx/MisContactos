@@ -83,7 +83,12 @@ public class ContactReceiver extends BroadcastReceiver {
             Cursor cursor = resolver.query(queryUri, null, null, null, null, null);
             contacto = Contacto.crearInstanciaDeCursor(cursor);
             int eliminados = resolver.delete(queryUri, null, null);
+            // TODO: Eliminar este Log al terminar fase de desarrollo
             Log.d("eliminarContacto?", String.valueOf(eliminados));
+            // No podemos eliminar directamente el URI de la imagen del contacto, pues es posible
+            // que algún otro contacto esté utilizando el mismo URI, sólo lo registramos para
+            // revisarlo más tarde con una tarea programada
+            tracker.recordImgUri(contacto.getImageUri());
             tracker.recordDeleteOp(contacto);
             cursor.close();
         }
