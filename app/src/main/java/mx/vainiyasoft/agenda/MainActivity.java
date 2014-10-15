@@ -9,6 +9,7 @@ import android.app.backup.BackupManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.gesture.Gesture;
 import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
@@ -17,11 +18,12 @@ import android.gesture.Prediction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -32,8 +34,9 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnTouch;
+import butterknife.OnItemClick;
 import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.nav.DrawerAdapter;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 import mx.vainiyasoft.agenda.util.SweeperTask;
@@ -43,17 +46,14 @@ import static android.gesture.GestureOverlayView.OnGesturePerformedListener;
 // Ya no se usa el OrmLiteBaseActivity al usar ContentProvider
 public class MainActivity extends Activity implements OnGesturePerformedListener {
 
-    @InjectView(R.id.btn_crear_contacto)
-    protected ImageButton btnCrearContacto;
+    @InjectView(R.id.rootPane)
+    protected DrawerLayout drawerLayout;
+    @InjectView(R.id.nav_drawer)
+    protected ListView drawerList;
 
-    @InjectView(R.id.btn_lista_contactos)
-    protected ImageButton btnListaContactos;
-
-    @InjectView(R.id.btn_eliminar_contactos)
-    protected ImageButton btnEliminarContactos;
-
-    @InjectView(R.id.btn_sincronizar)
-    protected ImageButton btnSincronizar;
+    private ActionBarDrawerToggle drawerToggle;
+    private CharSequence mDrawerTitle, mTitle;
+    private String[] titulos;
 
     private CrearContactoFragment fragmentoCrear;
     private ListaContactosFragment fragmentoLista;
@@ -61,15 +61,17 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private final int CONFIG_REQUEST_CODE = 0;
     private ContactReceiver receiver;
     private HttpServiceBroker broker;
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View overlayView = inicializarVista();
         setContentView(overlayView);
+        titulos = getResources().getStringArray(R.array.nav_drawer_titles);
         ButterKnife.inject(this);
-        inicializaActionBar();
+        DrawerAdapter adapter = new DrawerAdapter(this, R.layout.drawer_item, titulos);
+        drawerList.setAdapter(adapter);
+        inicializarNavigationDrawer();
         inicializaComponentes();
         requestBackup();
     }
@@ -77,6 +79,44 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private void requestBackup() {
         BackupManager manager = new BackupManager(this);
         manager.dataChanged();
+    }
+
+    private void inicializarNavigationDrawer() {
+        mTitle = mDrawerTitle = getTitle();
+        final ActionBar actionBar = getActionBar();
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
+                R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                actionBar.setTitle(mDrawerTitle);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                actionBar.setTitle(mTitle);
+                invalidateOptionsMenu();
+            }
+        };
+        // Asignamos el objeto drawerToggle como el DrawerListener
+        drawerLayout.setDrawerListener(drawerToggle);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sincronizamos el estado del drawerToggle después de que se ejecute el método onRestoreInstanceState
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private View inicializarVista() {
@@ -121,11 +161,6 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         if (viewTag.startsWith("phone")) cargarFragmento(getFragmentoLista());
     }
 
-    private void inicializaActionBar() {
-        actionBar = getActionBar();
-        // actionBar.setHomeButtonEnabled(false);
-    }
-
     //<editor-fold desc="METODOS GET DE INICIALIZACION BAJO DEMANDA (LAZY INITIALIZATION)">
     public CrearContactoFragment getFragmentoCrear() {
         if (fragmentoCrear == null) fragmentoCrear = new CrearContactoFragment();
@@ -151,43 +186,32 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         ft.commit();
     }
 
-    @OnTouch({R.id.btn_crear_contacto, R.id.btn_lista_contactos, R.id.btn_eliminar_contactos, R.id.btn_sincronizar})
-    public boolean onTouch(View view, MotionEvent evt) {
-        ImageButton btn = (ImageButton) view;
-        int actionMasked = evt.getActionMasked();
-        switch (actionMasked) {
-            case MotionEvent.ACTION_DOWN:
-                btn.setColorFilter(R.color.entintado_oscuro);
-                btn.invalidate();
-                cambiarFragmento(btn);
-                break;
-            case MotionEvent.ACTION_UP:
-                btn.clearColorFilter();
-                btn.invalidate();
-                break;
-        }
-        return true;
-    }
-
-    private void cambiarFragmento(View view) {
-        switch (view.getId()) {
-            case R.id.btn_crear_contacto:
+    @OnItemClick(R.id.nav_drawer)
+    public void selectItem(int position) {
+        switch (position) {
+            case 0:
                 cargarFragmento(getFragmentoCrear());
-                btnEliminarContactos.setVisibility(View.INVISIBLE);
-                btnSincronizar.setVisibility(View.INVISIBLE);
+                setTitle(titulos[position]);
                 break;
-            case R.id.btn_lista_contactos:
+            case 1:
                 cargarFragmento(getFragmentoLista());
-                btnEliminarContactos.setVisibility(View.VISIBLE);
-                btnSincronizar.setVisibility(View.VISIBLE);
-                break;
-            case R.id.btn_eliminar_contactos:
+                setTitle(titulos[position]);
+            case 2:
                 notificarEliminarContactos();
                 break;
-            case R.id.btn_sincronizar:
+            case 3:
                 notificarSincronizacion();
                 break;
         }
+        // Resaltar el elemento seleciconado, actualizar el títulos y cerrar el drawer
+        drawerList.setItemChecked(position, true);
+        drawerLayout.closeDrawer(drawerList);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(title);
     }
 
     @Override
@@ -209,9 +233,10 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Importante atrapar primero las notificaciones del drawer
+        if (drawerToggle.onOptionsItemSelected(item)) return true;
         // Sólo existe una opción en el menú
-        Intent intent = new Intent();
-        intent.setClass(this, ConfiguracionActivity.class);
+        Intent intent = new Intent(this, ConfiguracionActivity.class);
         startActivityForResult(intent, CONFIG_REQUEST_CODE);
         return true;
     }

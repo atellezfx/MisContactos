@@ -52,7 +52,13 @@
 
         <activity
             android:name="mx.vainiyasoft.agenda.ConfiguracionActivity"
-            android:label="@string/action_settings" />
+            android:label="@string/action_settings"
+            android:parentActivityName="mx.vainiyasoft.agenda.MainActivity">
+            <!--Este elemento meta-data es requerido para versiones menores a 4.1-->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="mx.vainiyasoft.agenda.MainActivity" />
+        </activity>
 
         <service
             android:name="mx.vainiyasoft.agenda.net.HttpPostService"

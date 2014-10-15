@@ -63,4 +63,14 @@
         <item>Library</item>
     </string-array>
 
+    <!--Recursos para el Navigation Drawer-->
+    <string-array name="nav_drawer_titles">
+        <item>Create Contact</item>
+        <item>Contact List</item>
+        <item>Remove Selected</item>
+        <item>Synchronize</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
 </resources>

@@ -89,6 +89,8 @@
     <orderEntry type="library" exported="" name="butterknife-5.1.1" level="project" />
     <orderEntry type="library" exported="" name="jackson-databind-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-2.4.1" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.3.2" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.4.1" level="project" />
     <orderEntry type="library" exported="" name="ormlite-content-provider-library-1.0.4" level="project" />

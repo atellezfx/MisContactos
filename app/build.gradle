@@ -50,4 +50,5 @@ dependencies {
     // CARGANDO DEPENDENCIA PARA LIBRERIA BUTTER KNIFE
     compile 'com.jakewharton:butterknife:5.1.1'
     compile project(':cardui')
+    compile 'com.android.support:support-v4:20.0.0'
 }
