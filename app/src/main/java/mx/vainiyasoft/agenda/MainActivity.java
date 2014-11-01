@@ -66,6 +66,8 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View overlayView = inicializarVista();
+        // Primera técnica de apps a pantalla completa "FullScreen Activity"
+//        setFullScreen(this);  // Es necesario realizarlo antes del setContentView()
         setContentView(overlayView);
         titulos = getResources().getStringArray(R.array.nav_drawer_titles);
         ButterKnife.inject(this);
@@ -74,7 +76,46 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         inicializarNavigationDrawer();
         inicializaComponentes();
         requestBackup();
+        // Segunda técnica, utilizando el modo immersivo no pegadizo
+        // modoImmersivoNoPegadizo(); // No se obtiene un resultado óptimo.
     }
+
+    // Tercera opción y la más "elegante", Modo Immersivo Pegadizo
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus) {
+            drawerLayout.setSystemUiVisibility(
+                    // Igual, la siguiente línea oculta el ActionBar, la comentamos
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    // Las siguientes dos líneas ocultan la barra de navegación, en nuestra app
+                    // puede traer problemas, pues sí resulta últi. Las comentamos también.
+//                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN |
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
+        }
+    }
+
+//    private void modoImmersivoNoPegadizo() {
+//        drawerLayout.setSystemUiVisibility(
+//                // Algunos blogs y documentación recomiendan utilizar la siguiente línea de código
+//                // pero igualmente la comentamos, pues oculta el ActionBar y no aplica en nuestra app
+////                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+//                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN |
+//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN |
+//                        View.SYSTEM_UI_FLAG_IMMERSIVE
+//        );
+//    }
+
+//    private void setFullScreen(Activity activity) {
+//        // Algunos blogs sugieren la siguiente línea de código pero en nuestro caso nos quitará el
+//        // ActionBar, así que la comentaremos para este caso
+//        // activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        Window win = activity.getWindow();
+//        win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//    }
 
     private void requestBackup() {
         BackupManager manager = new BackupManager(this);
@@ -84,39 +125,41 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private void inicializarNavigationDrawer() {
         mTitle = mDrawerTitle = getTitle();
         final ActionBar actionBar = getActionBar();
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
-                R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                actionBar.setTitle(mDrawerTitle);
-                invalidateOptionsMenu();
-            }
+        if(actionBar!=null) {
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
+                    R.string.drawer_open, R.string.drawer_close) {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    super.onDrawerOpened(drawerView);
+                    actionBar.setTitle(mDrawerTitle);
+                    invalidateOptionsMenu();
+                }
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                actionBar.setTitle(mTitle);
-                invalidateOptionsMenu();
-            }
-        };
-        // Asignamos el objeto drawerToggle como el DrawerListener
-        drawerLayout.setDrawerListener(drawerToggle);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    actionBar.setTitle(mTitle);
+                    invalidateOptionsMenu();
+                }
+            };
+            // Asignamos el objeto drawerToggle como el DrawerListener
+            drawerLayout.setDrawerListener(drawerToggle);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sincronizamos el estado del drawerToggle después de que se ejecute el método onRestoreInstanceState
-        drawerToggle.syncState();
+        if(drawerToggle!=null) drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        if(drawerToggle!=null) drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private View inicializarVista() {
@@ -196,6 +239,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
             case 1:
                 cargarFragmento(getFragmentoLista());
                 setTitle(titulos[position]);
+                break;
             case 2:
                 notificarEliminarContactos();
                 break;

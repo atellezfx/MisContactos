@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:0.14.0'
         // PLUGIN PARA PROCESAMIENTO DE ANOTACIONES
         classpath 'com.uphyca.gradle:gradle-android-apt-plugin:0.9.+'
     }
