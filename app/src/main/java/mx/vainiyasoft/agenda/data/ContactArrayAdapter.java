@@ -3,6 +3,7 @@ package mx.vainiyasoft.agenda.data;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,7 +32,9 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
     private static final String LOG_TAG = ContactArrayAdapter.class.getSimpleName();
 
     private Context context;
+    private int posicionMasAlta = 4;
     private List<Contacto> contactos;
+    private SparseBooleanArray seleccionados = new SparseBooleanArray();
 
     public ContactArrayAdapter(Context context, int resource, List<Contacto> contactos) {
         super(context, resource, contactos);
@@ -38,7 +43,30 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
         setNotifyOnChange(true);
     }
 
-    private int posicionMasAlta = 4;
+    public void setViewSelection(int position, boolean value) {
+        seleccionados.put(position, value);
+        notifyDataSetChanged();
+    }
+
+    public boolean isPositionChecked(int position) {
+        return seleccionados.get(position);
+    }
+
+    public Set<Integer> getCurrentCheckedPositions() {
+        Set<Integer> posiciones = new HashSet<Integer>(seleccionados.size());
+        for(int i=0; i < seleccionados.size(); i++) posiciones.add(seleccionados.keyAt(i));
+        return posiciones;
+    }
+
+    public void removeSelection(int position) {
+        seleccionados.delete(position);
+        notifyDataSetChanged();
+    }
+
+    public void clearSelection() {
+        seleccionados.clear();
+        notifyDataSetChanged();
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -60,12 +88,12 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
             animation.setDuration(800);
             row.startAnimation(animation);
             posicionMasAlta = position;
-        } else if (position <= 4) posicionMasAlta = 4;
-        inicializarContenido(row, holder, contactos.get(position));
+        } // else if (position <= 4) posicionMasAlta = 4;
+        inicializarContenido(holder, contactos.get(position));
         return row;
     }
 
-    private void inicializarContenido(View view, ViewHolder holder, Contacto contacto) {
+    private void inicializarContenido(ViewHolder holder, Contacto contacto) {
         holder.viewNombre.setText(contacto.getNombre());
         holder.viewTelefono.setText(contacto.getTelefono());
         holder.viewEmail.setText(contacto.getEmail());
