@@ -22,6 +22,7 @@
     <string name="mesg_positive_dialog_option">YES</string>
     <string name="mesg_negative_dialog_option">NO</string>
     <string name="mesg_toast_sync_confirm">%s synchronized</string>
+    <string name="mesg_app_not_configured">Not configured for sync</string>
 
     <!-- Recursos para HttpServiceBroker.java -->
     <string name="mesg_wifi_not_available">No WiFi available</string>
@@ -38,6 +39,8 @@
     <string name="summary_config_server">Name or server address</string>
     <string name="title_config_port">Port</string>
     <string name="summary_config_port">Communitacions Port</string>
+    <string name="title_swipe_refresh">Swipe To Refresh</string>
+    <string name="summary_swipe_refresh">Enable swipe to refresh</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
 

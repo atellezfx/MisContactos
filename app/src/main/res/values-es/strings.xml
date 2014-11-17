@@ -11,6 +11,7 @@
     <string name="text_btncancelar">Cancelar</string>
     <string name="text_btnguardar">Guardar</string>
     <string name="mesg_preferences_saved">Datos del usuario \'%s\' guardados</string>
+    <string name="mesg_app_not_configured">Falta configuración para sincronizar</string>
 
     <!--Recursos CrearContactoFragment.java -->
     <string name="title_alertdialog_error">Error</string>
@@ -39,6 +40,8 @@
     <string name="summary_config_server">Nombre o dirección del servidor</string>
     <string name="title_config_port">Puerto</string>
     <string name="summary_config_port">Puerto de comunicación</string>
+    <string name="title_swipe_refresh">Deslizar para sincronizar</string>
+    <string name="summary_swipe_refresh">Activar deslizar para sincronizar</string>
 
     <!--Recursos para el Widget Contador de Contactos-->
     <string name="widget_simple_titulo">Contactos en Agenda</string>

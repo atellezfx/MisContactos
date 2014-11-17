@@ -56,6 +56,7 @@ public class PhotoCopier {
         String displayName = cursor.getString(index);
         //TODO: Eliminar Log, luego de fase de pruebas
         Log.d(LOG_TAG, "NOMBRE DE ARCHIVO: " + displayName);
+        cursor.close();
         return displayName;
     }
 

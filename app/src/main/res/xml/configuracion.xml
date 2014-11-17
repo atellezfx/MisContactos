@@ -6,6 +6,11 @@
             android:title="@string/title_config_username"
             android:summary="@string/summary_config_username"
             android:defaultValue="" />
+        <SwitchPreference
+            android:key="swipe_refresh"
+            android:title="@string/title_swipe_refresh"
+            android:summary="@string/summary_swipe_refresh"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/title_server_category">
         <EditTextPreference

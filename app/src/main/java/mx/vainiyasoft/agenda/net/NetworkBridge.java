@@ -1,7 +1,10 @@
 package mx.vainiyasoft.agenda.net;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.util.ArrayList;
 
@@ -69,6 +72,12 @@ public class NetworkBridge {
         for (DataChangeTracker.StoredRecord record : createList) datos.add(record.getData());
         intent.putParcelableArrayListExtra("datos", datos);
         activity.sendBroadcast(intent);
+    }
+
+    public static boolean isWifiEnabled(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return info != null && info.isConnected();
     }
 
 }

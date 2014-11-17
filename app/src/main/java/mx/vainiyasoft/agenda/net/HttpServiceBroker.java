@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -73,7 +71,7 @@ public class HttpServiceBroker extends BroadcastReceiver {
     }
 
     private void performRequest(Context context, Intent intent, Class<? extends IntentService> serviceClass) {
-        if (wifiEnabled(context)) {
+        if (NetworkBridge.isWifiEnabled(context)) {
             Intent requestIntent = new Intent(context, serviceClass);
             requestIntent.putExtras(intent);
             if (requestIntent.hasExtra("datos")) requestIntent.removeExtra("datos");
@@ -82,12 +80,6 @@ public class HttpServiceBroker extends BroadcastReceiver {
             Toast.makeText(context, i18n(mx.vainiyasoft.agenda.R.string.mesg_wifi_not_available),
                     Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean wifiEnabled(Context context) {
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        return info != null && info.isConnected();
     }
 
     private void loadPreferences(Context context) {
