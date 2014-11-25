@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnItemClick;
-import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.data.ContactOperations;
 import mx.vainiyasoft.agenda.nav.DrawerAdapter;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
 import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private ListaContactosFragment fragmentoLista;
     private GestureLibrary gestureLib;
     private final int CONFIG_REQUEST_CODE = 0;
-    private ContactReceiver receiver;
+    private ContactOperations receiver;
     private HttpServiceBroker broker;
 
     @Override
@@ -84,7 +84,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(hasFocus) {
+        if (hasFocus) {
             drawerLayout.setSystemUiVisibility(
                     // Igual, la siguiente línea oculta el ActionBar, la comentamos
 //                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private void inicializarNavigationDrawer() {
         mTitle = mDrawerTitle = getTitle();
         final ActionBar actionBar = getActionBar();
-        if(actionBar!=null) {
+        if (actionBar != null) {
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
                     R.string.drawer_open, R.string.drawer_close) {
                 @Override
@@ -153,13 +153,13 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sincronizamos el estado del drawerToggle después de que se ejecute el método onRestoreInstanceState
-        if(drawerToggle!=null) drawerToggle.syncState();
+        if (drawerToggle != null) drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if(drawerToggle!=null) drawerToggle.onConfigurationChanged(newConfig);
+        if (drawerToggle != null) drawerToggle.onConfigurationChanged(newConfig);
     }
 
     private View inicializarVista() {
@@ -176,9 +176,9 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     @Override
     public void onResume() {
         super.onResume();
-        receiver = new ContactReceiver(this);
+        receiver = new ContactOperations(this);
         broker = new HttpServiceBroker();
-        registerReceiver(receiver, new IntentFilter(ContactReceiver.FILTER_NAME));
+        registerReceiver(receiver, new IntentFilter(ContactOperations.FILTER_NAME));
         registerReceiver(broker, new IntentFilter(HttpServiceBroker.FILTER_NAME));
     }
 

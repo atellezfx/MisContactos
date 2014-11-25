@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.data.ContactOperations;
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.util.PhotoCopier;
 import mx.vainiyasoft.agenda.util.SelectPictureBridge;
@@ -128,8 +128,8 @@ public class CrearContactoFragment extends BaseFragment {
         String usuario = shp.getString("username", null);
         if (usuario != null) {
             Contacto nuevo = new Contacto(nombre, telefono, email, direccion, imageUri, usuario);
-            Intent intent = new Intent(ContactReceiver.FILTER_NAME);
-            intent.putExtra("operacion", ContactReceiver.CONTACTO_AGREGADO);
+            Intent intent = new Intent(ContactOperations.FILTER_NAME);
+            intent.putExtra("operacion", ContactOperations.CONTACTO_AGREGADO);
             intent.putExtra("datos", nuevo);
             getActivity().sendBroadcast(intent);
             return true;

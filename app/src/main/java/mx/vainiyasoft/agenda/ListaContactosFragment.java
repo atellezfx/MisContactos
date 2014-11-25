@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.vainiyasoft.agenda.data.ContactArrayAdapter;
-import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.data.ContactOperations;
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.entity.ContactoContract;
 import mx.vainiyasoft.agenda.net.NetworkBridge;
@@ -148,8 +148,8 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
                         seleccion.add(listAdapter.getItem(position));
                 }
                 for (Contacto con : seleccion) listAdapter.remove(con);
-                Intent intent = new Intent(ContactReceiver.FILTER_NAME);
-                intent.putExtra("operacion", ContactReceiver.CONTACTO_ELIMINADO);
+                Intent intent = new Intent(ContactOperations.FILTER_NAME);
+                intent.putExtra("operacion", ContactOperations.CONTACTO_ELIMINADO);
                 intent.putParcelableArrayListExtra("datos", seleccion);
                 getActivity().sendBroadcast(intent);
                 listView.clearChoices();

@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import mx.vainiyasoft.agenda.MainActivity;
 import mx.vainiyasoft.agenda.R;
-import mx.vainiyasoft.agenda.data.ContactReceiver;
+import mx.vainiyasoft.agenda.data.ContactOperations;
 import mx.vainiyasoft.agenda.entity.JSONBean;
 import mx.vainiyasoft.agenda.util.ApplicationContextProvider;
 import mx.vainiyasoft.agenda.util.NotificationController;
@@ -63,8 +63,8 @@ public class HttpPostService extends IntentService {
             // TODO: Eliminar Log al finalizar las pruebas
             Log.i("ServerID Recibido", String.valueOf(serverId));
             bean.setServerId(serverId);
-            Intent resp_intent = new Intent(ContactReceiver.FILTER_NAME);
-            resp_intent.putExtra("operacion", ContactReceiver.CONTACTO_ACTUALIZADO);
+            Intent resp_intent = new Intent(ContactOperations.FILTER_NAME);
+            resp_intent.putExtra("operacion", ContactOperations.CONTACTO_ACTUALIZADO);
             resp_intent.putExtra("datos", bean);
             Context ctx = ApplicationContextProvider.getContext();
             ctx.sendBroadcast(resp_intent);

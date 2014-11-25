@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import mx.vainiyasoft.agenda.data.DataChangeTracker;
@@ -47,14 +48,15 @@ public class SweeperTask implements Runnable {
     }
 
     private List<String> filtrarURIsEnUso(List<String> urisRegistrados) {
+        // Trabajamos sobre una nueva lista para evitar la excepción ConcurrentModificationException
+        List<String> uris = new ArrayList<String>();
         for (String imgUri : urisRegistrados) {
-            String where = String.format("%s=?", ContactoContract.IMAGEURI);
-            String[] whereParams = new String[]{imgUri};
-            Cursor cursor = resolver.query(ContactoContract.CONTENT_URI, null, where, whereParams, null);
-            if (cursor.getCount() > 0) urisRegistrados.remove(imgUri);
+            String where = String.format("%s=\"%s\"", ContactoContract.IMAGEURI, imgUri);
+            Cursor cursor = resolver.query(ContactoContract.CONTENT_URI, null, where, null, null);
+            if (cursor.getCount() == 0) uris.add(imgUri);
             cursor.close();
         }
-        return urisRegistrados;
+        return uris;
     }
 
 
