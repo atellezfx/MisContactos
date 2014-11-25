@@ -129,7 +129,7 @@ public class CrearContactoFragment extends BaseFragment {
         if (usuario != null) {
             Contacto nuevo = new Contacto(nombre, telefono, email, direccion, imageUri, usuario);
             Intent intent = new Intent(ContactOperations.FILTER_NAME);
-            intent.putExtra("operacion", ContactOperations.CONTACTO_AGREGADO);
+            intent.putExtra("operacion", ContactOperations.ACCION_AGREGAR_CONTACTO);
             intent.putExtra("datos", nuevo);
             getActivity().sendBroadcast(intent);
             return true;

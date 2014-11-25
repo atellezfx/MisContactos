@@ -7,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
@@ -15,51 +14,67 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import mx.vainiyasoft.agenda.data.ContactArrayAdapter;
 import mx.vainiyasoft.agenda.data.ContactOperations;
+import mx.vainiyasoft.agenda.data.ContactUtilities;
 import mx.vainiyasoft.agenda.entity.Contacto;
 import mx.vainiyasoft.agenda.entity.ContactoContract;
 import mx.vainiyasoft.agenda.net.NetworkBridge;
-import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
+import mx.vainiyasoft.agenda.util.ShareOptionsBridge;
 
 import static android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import static android.view.ViewGroup.LayoutParams;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static mx.vainiyasoft.agenda.util.MenuBarActionReceiver.FILTER_NAME;
-import static mx.vainiyasoft.agenda.util.MenuBarActionReceiver.MenuBarActionListener;
+import static android.widget.AbsListView.MultiChoiceModeListener;
+import static android.widget.AdapterView.OnItemLongClickListener;
+import static mx.vainiyasoft.agenda.data.ContactOperations.ContactOperationsListener;
+
+// Si por alguna razón, al compilar el proyecto marca que no encuentra la siguiente clase
+// será necesario ir al menú Build > Make Module 'app'
+// y finalmente escoger la opción del menú Build > Rebuild Project
+// de esta forma se regenera este archivo que recordaremos es el que se genera
+// con el procesador de anotaciones para el ContentProvider
 
 /**
  * Created by alejandro on 5/2/14.
  */
-public class ListaContactosFragment extends ListFragment implements MenuBarActionListener, OnRefreshListener {
+public class ListaContactosFragment extends ListFragment
+        implements ContactOperationsListener, OnRefreshListener, MultiChoiceModeListener, OnItemLongClickListener {
 
     private static final String LOG_TAG = ListaContactosFragment.class.getSimpleName();
 
     private ListView listView;
     private SwipeRefreshLayout refreshLayout;
-
-    private MenuBarActionReceiver receiver;
+    private ContactUtilities utils;
     private ContactArrayAdapter listAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            Context context = getActivity();
-            ContentResolver resolver = context.getContentResolver();
+            Activity activity = getActivity();
+            utils = new ContactUtilities(activity);
+            ContentResolver resolver = activity.getContentResolver();
             Cursor cursor = resolver.query(ContactoContract.CONTENT_URI, null, null, null, null);
             List<Contacto> contactos = Contacto.crearListaDeCursor(cursor);
             // El adapter será el encargado de ir creando los fragmentos conforme se necesiten y "reciclarlos"
-            listAdapter = new ContactArrayAdapter(context, R.layout.listview_item, contactos);
+            listAdapter = new ContactArrayAdapter(activity, R.layout.listview_item, contactos);
             setListAdapter(listAdapter);
             cursor.close();
         }
@@ -88,28 +103,20 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE); // Cambiar a CHOICE_MODE_MULTIPLE_MODAL al utilizar Contextual ActionBAr (CAB)
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL); // Cambiar a CHOICE_MODE_MULTIPLE_MODAL al utilizar Contextual ActionBAr (CAB)
+        listView.setMultiChoiceModeListener(this);
+        listView.setOnItemLongClickListener(this);
         listView.setDividerHeight(5); // Usabamos 5dp en el xml
         listView.setBackgroundColor(0xFFD1D1D1);
         listView.setDivider(null); // Remover las separaciones entre elementos de la lista
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        receiver = new MenuBarActionReceiver(this);
-        // Sólo recibirá notificaciones mientras se encuentre mostrando en pantalla
-        getActivity().registerReceiver(receiver, new IntentFilter(FILTER_NAME));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(receiver);
+        // Puliendo la app, ocultamos el teclado virtual cuando no se está utilizando
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
     public void onRefresh() {
+        if (refreshLayout != null) refreshLayout.setRefreshing(true);
         Activity activity = getActivity();
         if (isAppConfigured()) {
             if (NetworkBridge.isWifiEnabled(activity)) {
@@ -123,18 +130,18 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
             Toast.makeText(activity, i18n(R.string.mesg_app_not_configured),
                     Toast.LENGTH_SHORT).show();
         }
-        refreshLayout.setRefreshing(false);
+        if (refreshLayout != null) refreshLayout.setRefreshing(false);
     }
 
     //<editor-fold desc="METODOS DE ADMINISTRACION DE CONTACTOS">
     @Override
-    public void contactoAgregado(Contacto contacto) {
+    public void contactoAgregado(Intent intent) {
+        Contacto contacto = utils.agregarContacto(intent);
         listAdapter.add(contacto);
     }
 
     @Override
-    public void eliminarContactos() {
-        String mensaje = "¿Está seguro de eliminar los contactos seleccionados?";
+    public void contactoEliminado(Intent intent, final ActionMode actionMode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setIcon(R.drawable.ic_action_warning);
         builder.setTitle(i18n(R.string.title_alertdialog_confirm));
@@ -149,10 +156,12 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
                 }
                 for (Contacto con : seleccion) listAdapter.remove(con);
                 Intent intent = new Intent(ContactOperations.FILTER_NAME);
-                intent.putExtra("operacion", ContactOperations.CONTACTO_ELIMINADO);
+                intent.putExtra("operacion", ContactOperations.ACCION_ELIMINAR_CONTACTOS);
                 intent.putParcelableArrayListExtra("datos", seleccion);
-                getActivity().sendBroadcast(intent);
-                listView.clearChoices();
+                utils.eliminarContacto(intent);
+                if (actionMode != null) actionMode.finish();
+                listAdapter.clearSelection();
+                seleccionados = 0;
             }
         });
         builder.setNegativeButton(i18n(R.string.mesg_negative_dialog_option), null);
@@ -160,23 +169,15 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
     }
 
     @Override
-    public void sincronizarDatos() {
-        NetworkBridge bridge = new NetworkBridge(getActivity());
-        bridge.sincronizarDatos();
+    public void contactoActualizado(Intent intent) {
+        utils.actualizarContacto(intent);
+    }
+
+    @Override
+    public void sincronizarContactos() {
+        onRefresh();
     }
     //</editor-fold>
-
-    // Comentamos este método, pues lo utilizaremos más adelante.
-//    @OnItemLongClick(R.id.fragment_listview)
-//    public boolean onItemLongClick(int position) {
-//        ShareOptionsBridge bridge = new ShareOptionsBridge(listAdapter, getActivity());
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle(R.string.share_title);
-//        builder.setItems(R.array.share_options, bridge.getDialogOnClickListener(position));
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//        return true;
-//    }
 
     private String i18n(int resourceId, Object... formatArgs) {
         return getResources().getString(resourceId, formatArgs);
@@ -192,6 +193,84 @@ public class ListaContactosFragment extends ListFragment implements MenuBarActio
         configured &= prefs.contains("swipe_refresh");
         configured &= prefs.contains("server_address");
         return configured && prefs.contains("server_port");
+    }
+
+    //<editor-fold desc="METODOS Y RECURSOS PARA ACTION BAR CONTEXTUAL">
+    private final int CONFIG_REQUEST_CODE = 101;
+    private int seleccionados = 0;
+
+    @Override
+    public void onItemCheckedStateChanged(ActionMode actionMode, int position, long id, boolean checked) {
+        if (checked) {
+            seleccionados++;
+            listAdapter.setNewSelection(position, checked);
+        } else {
+            seleccionados--;
+            listAdapter.removeSelection(position);
+        }
+        Activity activity = getActivity();
+        View shareItem = activity.findViewById(R.id.item_action_share);
+        shareItem.setVisibility(seleccionados == 1 ? View.VISIBLE : View.INVISIBLE);
+        actionMode.setTitle(String.format("%d selected", seleccionados));
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        seleccionados = 0;
+        Activity activity = getActivity();
+        MenuInflater inflater = activity.getMenuInflater();
+        inflater.inflate(R.menu.contextual_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.item_action_remove:
+                this.contactoEliminado(null, actionMode);
+                break;
+            case R.id.item_action_share:
+                Set<Integer> checked = listAdapter.getCurrentCheckedPositions();
+                if (checked.size() == 1) { // Sólo habilitamos compartir cuando un elemento está seleccioando por el momento
+                    ShareOptionsBridge bridge = new ShareOptionsBridge(listAdapter, getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle(R.string.share_title);
+                    Integer position = (Integer) checked.toArray()[0];
+                    builder.setItems(R.array.share_options, bridge.getDialogOnClickListener(position));
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+        listAdapter.clearSelection();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CONFIG_REQUEST_CODE) {
+            Activity activity = getActivity();
+            SharedPreferences shp = PreferenceManager.getDefaultSharedPreferences(activity);
+            String username = shp.getString("username", null);
+            String mesg = i18n(R.string.mesg_preferences_saved, username);
+            Toast.makeText(activity, mesg, Toast.LENGTH_SHORT).show();
+        }
+    }
+    //</editor-fold>
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+        listView.setItemChecked(position, !listAdapter.isPositionChecked(position));
+        return false;
     }
 
     /**

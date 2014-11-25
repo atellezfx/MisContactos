@@ -33,7 +33,7 @@ public class ContactUtilities {
         tracker = new DataChangeTracker(activity);
     }
 
-    private Contacto agregarContacto(Intent intent) {
+    public Contacto agregarContacto(Intent intent) {
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
         ContentValues values = contacto.getContentValues();
         values.remove(ContactoContract._ID); // Evitar inserción de id en contactos nuevos
@@ -45,7 +45,7 @@ public class ContactUtilities {
         return contacto;
     }
 
-    private void eliminarContacto(Intent intent) {
+    public void eliminarContacto(Intent intent) {
         ArrayList<Contacto> lista = intent.getParcelableArrayListExtra("datos");
         for (Contacto contacto : lista) {
             Uri queryUri = ContentUris.withAppendedId(ContactoContract.CONTENT_URI, contacto.getId());
@@ -64,7 +64,7 @@ public class ContactUtilities {
         notificarWidgetPorDatosModificados();
     }
 
-    private void notificarWidgetPorDatosModificados() {
+    public void notificarWidgetPorDatosModificados() {
         ComponentName cname = new ComponentName(context, ContadorContactosWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         // Obtenemos los IDs de nuestro widget, ya que puede haber mas de una instancia en pantallas
@@ -74,7 +74,7 @@ public class ContactUtilities {
         ContadorContactosWidget.updateAppWidget(context, manager, widgetIds);
     }
 
-    private void actualizarContacto(Intent intent) {
+    public void actualizarContacto(Intent intent) {
         Contacto contacto = (Contacto) intent.getParcelableExtra("datos");
         ContentValues values = contacto.getContentValues();
         // Evitamos modificar el ID desde este método

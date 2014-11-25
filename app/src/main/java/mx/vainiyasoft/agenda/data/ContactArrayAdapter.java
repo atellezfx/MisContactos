@@ -58,6 +58,11 @@ public class ContactArrayAdapter extends ArrayAdapter<Contacto> {
         return posiciones;
     }
 
+    public void setNewSelection(int position, boolean value) {
+        seleccionados.put(position, value);
+        notifyDataSetChanged();
+    }
+
     public void removeSelection(int position) {
         seleccionados.delete(position);
         notifyDataSetChanged();

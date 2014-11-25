@@ -74,5 +74,6 @@
     </string-array>
     <string name="drawer_open">Abre panel de navegación</string>
     <string name="drawer_close">Cierra panel de navegación</string>
+    <string name="label_btn_share_contacts">Compartir</string>
 
 </resources>

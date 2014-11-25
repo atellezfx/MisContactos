@@ -64,7 +64,7 @@ public class HttpPostService extends IntentService {
             Log.i("ServerID Recibido", String.valueOf(serverId));
             bean.setServerId(serverId);
             Intent resp_intent = new Intent(ContactOperations.FILTER_NAME);
-            resp_intent.putExtra("operacion", ContactOperations.CONTACTO_ACTUALIZADO);
+            resp_intent.putExtra("operacion", ContactOperations.ACCION_ACTUALIZAR_CONTACTO);
             resp_intent.putExtra("datos", bean);
             Context ctx = ApplicationContextProvider.getContext();
             ctx.sendBroadcast(resp_intent);

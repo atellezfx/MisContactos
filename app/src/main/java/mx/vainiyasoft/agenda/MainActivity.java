@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.backup.BackupManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,7 +40,6 @@ import butterknife.OnItemClick;
 import mx.vainiyasoft.agenda.data.ContactOperations;
 import mx.vainiyasoft.agenda.nav.DrawerAdapter;
 import mx.vainiyasoft.agenda.net.HttpServiceBroker;
-import mx.vainiyasoft.agenda.util.MenuBarActionReceiver;
 import mx.vainiyasoft.agenda.util.SweeperTask;
 
 import static android.gesture.GestureOverlayView.OnGesturePerformedListener;
@@ -59,15 +60,14 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     private ListaContactosFragment fragmentoLista;
     private GestureLibrary gestureLib;
     private final int CONFIG_REQUEST_CODE = 0;
-    private ContactOperations receiver;
+
+    private ContactOperations operations;
     private HttpServiceBroker broker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View overlayView = inicializarVista();
-        // Primera técnica de apps a pantalla completa "FullScreen Activity"
-//        setFullScreen(this);  // Es necesario realizarlo antes del setContentView()
         setContentView(overlayView);
         titulos = getResources().getStringArray(R.array.nav_drawer_titles);
         ButterKnife.inject(this);
@@ -76,46 +76,7 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         inicializarNavigationDrawer();
         inicializaComponentes();
         requestBackup();
-        // Segunda técnica, utilizando el modo immersivo no pegadizo
-        // modoImmersivoNoPegadizo(); // No se obtiene un resultado óptimo.
     }
-
-    // Tercera opción y la más "elegante", Modo Immersivo Pegadizo
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            drawerLayout.setSystemUiVisibility(
-                    // Igual, la siguiente línea oculta el ActionBar, la comentamos
-//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    // Las siguientes dos líneas ocultan la barra de navegación, en nuestra app
-                    // puede traer problemas, pues sí resulta últi. Las comentamos también.
-//                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            );
-        }
-    }
-
-//    private void modoImmersivoNoPegadizo() {
-//        drawerLayout.setSystemUiVisibility(
-//                // Algunos blogs y documentación recomiendan utilizar la siguiente línea de código
-//                // pero igualmente la comentamos, pues oculta el ActionBar y no aplica en nuestra app
-////                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-//                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN |
-//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN |
-//                        View.SYSTEM_UI_FLAG_IMMERSIVE
-//        );
-//    }
-
-//    private void setFullScreen(Activity activity) {
-//        // Algunos blogs sugieren la siguiente línea de código pero en nuestro caso nos quitará el
-//        // ActionBar, así que la comentaremos para este caso
-//        // activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        Window win = activity.getWindow();
-//        win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//    }
 
     private void requestBackup() {
         BackupManager manager = new BackupManager(this);
@@ -130,6 +91,9 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
                     R.string.drawer_open, R.string.drawer_close) {
                 @Override
                 public void onDrawerOpened(View drawerView) {
+                    // Puliendo la app, ocultamos el teclado virtual cuando no se utiliza
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(drawerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     super.onDrawerOpened(drawerView);
                     actionBar.setTitle(mDrawerTitle);
                     invalidateOptionsMenu();
@@ -176,16 +140,17 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     @Override
     public void onResume() {
         super.onResume();
-        receiver = new ContactOperations(this);
+        operations = new ContactOperations();
+        operations.addContactOperationsListener(fragmentoLista);
         broker = new HttpServiceBroker();
-        registerReceiver(receiver, new IntentFilter(ContactOperations.FILTER_NAME));
+        registerReceiver(operations, new IntentFilter(ContactOperations.FILTER_NAME));
         registerReceiver(broker, new IntentFilter(HttpServiceBroker.FILTER_NAME));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        unregisterReceiver(operations);
         unregisterReceiver(broker);
     }
 
@@ -296,14 +261,14 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     }
 
     private void notificarSincronizacion() {
-        Intent intent = new Intent(MenuBarActionReceiver.FILTER_NAME);
-        intent.putExtra("operacion", MenuBarActionReceiver.ACCION_SINCRONIZAR_CONTACTOS);
+        Intent intent = new Intent(ContactOperations.FILTER_NAME);
+        intent.putExtra("operacion", ContactOperations.ACCION_SINCRONIZAR_CONTACTOS);
         sendBroadcast(intent);
     }
 
     private void notificarEliminarContactos() {
-        Intent intent = new Intent(MenuBarActionReceiver.FILTER_NAME);
-        intent.putExtra("operacion", MenuBarActionReceiver.ACCION_ELIMINAR_CONTACTOS);
+        Intent intent = new Intent(ContactOperations.FILTER_NAME);
+        intent.putExtra("operacion", ContactOperations.ACCION_ELIMINAR_CONTACTOS);
         sendBroadcast(intent);
     }
 
