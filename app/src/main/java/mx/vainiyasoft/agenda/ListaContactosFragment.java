@@ -45,11 +45,10 @@ import static android.widget.AbsListView.MultiChoiceModeListener;
 import static android.widget.AdapterView.OnItemLongClickListener;
 import static mx.vainiyasoft.agenda.data.ContactOperations.ContactOperationsListener;
 
-// Si por alguna razón, al compilar el proyecto marca que no encuentra la siguiente clase
-// será necesario ir al menú Build > Make Module 'app'
-// y finalmente escoger la opción del menú Build > Rebuild Project
-// de esta forma se regenera este archivo que recordaremos es el que se genera
-// con el procesador de anotaciones para el ContentProvider
+// Si por alguna razón, al compilar el proyecto marca que no encuentra la clase ContactoContract
+// será necesario ir al menú Build > Make Module 'app' o bien volver a compilar el proyecto,
+// en AdroidStudio RC1 realizaron cambios en el modelo de compilación de proyectos, que afecto
+// nuestro procesador de anotaciones.
 
 /**
  * Created by alejandro on 5/2/14.
