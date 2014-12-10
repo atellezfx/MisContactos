@@ -49,6 +49,8 @@
     <!--Recursos para la barra de menú en layout de tablet-->
     <string name="label_btn_remove_contact">Eliminar</string>
     <string name="label_btn_sync_contacts">Sincronizar</string>
+    <string name="label_btn_add_contact">Crear Contacto</string>
+    <string name="label_btn_contact_list">Lista de Contactos</string>
 
     <!--Recursos para el menú de compartir contactos-->
     <string name="share_title">Compartir vía</string>

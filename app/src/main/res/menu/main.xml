@@ -9,6 +9,12 @@
         android:showAsAction="always" />
 
     <item
+        android:id="@+id/item_action_create"
+        android:title="@string/label_btn_add_contact"
+        android:icon="@drawable/ic_action_add_person"
+        android:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/item_action_synchronize"
         android:title="@string/label_btn_sync_contacts"
         android:icon="@drawable/ic_action_refresh"

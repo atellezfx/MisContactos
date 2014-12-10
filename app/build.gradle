@@ -1,4 +1,4 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 // CARGAR EL PLUGIN PROCESADOR DE ANOTACIONES
 apply plugin: 'android-apt'
 
@@ -15,13 +15,14 @@ android {
     }
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 19
+        targetSdkVersion 19 // Por el momento nos mantendremos en SDK v.19
         versionCode 1
         versionName '1.0'
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
+            // Desaprobado uso de runProguard, aplicado en plugin de gradle 1.0 (incluído en AS v.1.0)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }

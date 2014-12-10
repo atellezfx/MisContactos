@@ -72,6 +72,8 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
         titulos = getResources().getStringArray(R.array.nav_drawer_titles);
         ButterKnife.inject(this);
         DrawerAdapter adapter = new DrawerAdapter(this, R.layout.drawer_item, titulos);
+        View listHeader = View.inflate(this, R.layout.drawer_list_header, null);
+        drawerList.addHeaderView(listHeader, null, false);
         drawerList.setAdapter(adapter);
         inicializarNavigationDrawer();
         inicializaComponentes();
@@ -196,19 +198,20 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
 
     @OnItemClick(R.id.nav_drawer)
     public void selectItem(int position) {
+        // El caso 0, (posición 0) es ocupada por el header de la lista
         switch (position) {
-            case 0:
-                cargarFragmento(getFragmentoCrear());
-                setTitle(titulos[position]);
-                break;
             case 1:
-                cargarFragmento(getFragmentoLista());
-                setTitle(titulos[position]);
+                cargarFragmento(getFragmentoCrear());
+                setTitle(titulos[position - 1]);
                 break;
             case 2:
-                notificarEliminarContactos();
+                cargarFragmento(getFragmentoLista());
+                setTitle(titulos[position - 1]);
                 break;
             case 3:
+                notificarEliminarContactos();
+                break;
+            case 4:
                 notificarSincronizacion();
                 break;
         }
@@ -244,10 +247,20 @@ public class MainActivity extends Activity implements OnGesturePerformedListener
     public boolean onOptionsItemSelected(MenuItem item) {
         // Importante atrapar primero las notificaciones del drawer
         if (drawerToggle.onOptionsItemSelected(item)) return true;
-        // Sólo existe una opción en el menú
-        Intent intent = new Intent(this, ConfiguracionActivity.class);
-        startActivityForResult(intent, CONFIG_REQUEST_CODE);
-        return true;
+        switch (item.getItemId()) {
+            case R.id.item_action_settings:
+                Intent intent = new Intent(this, ConfiguracionActivity.class);
+                startActivityForResult(intent, CONFIG_REQUEST_CODE);
+                return true;
+            case R.id.item_action_create:
+                cargarFragmento(getFragmentoCrear());
+                setTitle(titulos[1]);
+                return true;
+            case R.id.item_action_synchronize:
+                notificarSincronizacion();
+                return true;
+        }
+        return false;
     }
 
     @Override
