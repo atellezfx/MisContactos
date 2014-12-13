@@ -5,19 +5,19 @@
     <item
         android:id="@+id/item_action_settings"
         android:title="@string/title_settings_menu_item"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_menu_settings"
         android:showAsAction="always" />
 
     <item
         android:id="@+id/item_action_create"
         android:title="@string/label_btn_add_contact"
-        android:icon="@drawable/ic_action_add_person"
+        android:icon="@drawable/ic_menu_adduser"
         android:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/item_action_synchronize"
         android:title="@string/label_btn_sync_contacts"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_menu_sinchronize"
         android:showAsAction="ifRoom" />
 
 </menu>

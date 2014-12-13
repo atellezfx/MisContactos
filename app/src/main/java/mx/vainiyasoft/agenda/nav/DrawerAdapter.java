@@ -54,16 +54,16 @@ public class DrawerAdapter extends ArrayAdapter<String> {
         int item_image_resource = -1;
         switch (position) {
             case 0:
-                item_image_resource = R.drawable.ic_action_add_person;
+                item_image_resource = R.drawable.ic_menu_adduser;
                 break;
             case 1:
-                item_image_resource = R.drawable.ic_action_view_as_list;
+                item_image_resource = R.drawable.ic_menu_viewlist;
                 break;
             case 2:
-                item_image_resource = R.drawable.ic_action_discard;
+                item_image_resource = R.drawable.ic_menu_delete;
                 break;
             case 3:
-                item_image_resource = R.drawable.ic_action_refresh;
+                item_image_resource = R.drawable.ic_menu_sinchronize;
                 break;
         }
         Picasso.with(context).load(item_image_resource).config(Bitmap.Config.ARGB_8888)

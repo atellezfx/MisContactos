@@ -4,13 +4,13 @@
     <item
         android:id="@+id/item_action_share"
         android:title="@string/label_btn_share_contacts"
-        android:icon="@drawable/ic_action_share"
+        android:icon="@drawable/ic_menu_share"
         android:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/item_action_remove"
         android:title="@string/label_btn_remove_contact"
-        android:icon="@drawable/ic_action_discard"
+        android:icon="@drawable/ic_menu_delete"
         android:showAsAction="always" />
 
 </menu>

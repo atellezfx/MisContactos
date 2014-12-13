@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
         android:layout_above="@+id/gridLayout">
@@ -21,13 +23,15 @@
 
             <ImageView
                 android:id="@+id/imgContacto"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/contacto"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:background="@color/fondo_gris" />
+                android:alpha="0.8"
+                android:cropToPadding="false"
+                android:scaleType="fitXY" />
 
             <EditText
                 android:id="@+id/cmpNombre"
@@ -61,7 +65,9 @@
                 android:hint="@string/hint_cmpemail"
                 android:layout_below="@+id/cmpTelefono"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_marginTop="10dp" />
 
             <EditText
@@ -74,6 +80,7 @@
                 android:layout_below="@+id/cmpEmail"
                 android:minLines="2"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp" />
         </RelativeLayout>
     </ScrollView>
@@ -91,7 +98,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
         android:layout_alignParentRight="true"
-        android:columnOrderPreserved="false">
+        android:columnOrderPreserved="false"
+        android:background="@color/texto_gris_oscuro">
 
         <ImageButton
             android:id="@+id/btnCancelar"
@@ -99,7 +107,8 @@
             android:layout_height="48dp"
             android:layout_row="0"
             android:layout_column="0"
-            android:src="@drawable/ic_action_remove" />
+            android:src="@drawable/ic_menu_erase"
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/btnImportar"
@@ -108,8 +117,9 @@
             android:layout_row="0"
             android:layout_column="1"
             android:layout_gravity="fill_horizontal|center_horizontal"
-            android:src="@drawable/qrcode"
-            android:scaleType="fitCenter" />
+            android:src="@drawable/ic_menu_qrcode"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent" />
 
         <ImageButton
             android:id="@+id/btnGuardar"
@@ -117,7 +127,8 @@
             android:layout_height="48dp"
             android:layout_row="0"
             android:layout_column="2"
-            android:src="@drawable/ic_action_save" />
+            android:src="@drawable/btn_save_contact"
+            android:background="@android:color/transparent" />
 
     </GridLayout>
 

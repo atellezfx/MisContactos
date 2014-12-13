@@ -9,6 +9,7 @@ import android.provider.Settings;
 import android.widget.RemoteViews;
 
 import mx.vainiyasoft.agenda.MainActivity;
+import mx.vainiyasoft.agenda.R;
 
 /**
  * Created by alejandro on 6/16/14.
@@ -67,7 +68,7 @@ public class NotificationController {
         contentView.setTextViewText(mx.vainiyasoft.agenda.R.id.notification_text, message);
         contentView.setProgressBar(mx.vainiyasoft.agenda.R.id.notification_progress, maxProgress, currentProgress, false);
         if (currentProgress == maxProgress)
-            contentView.setImageViewResource(mx.vainiyasoft.agenda.R.id.notification_check, mx.vainiyasoft.agenda.R.drawable.ic_action_accept);
+            contentView.setImageViewResource(mx.vainiyasoft.agenda.R.id.notification_check, R.drawable.ic_menu_accept);
         return contentView;
     }
 

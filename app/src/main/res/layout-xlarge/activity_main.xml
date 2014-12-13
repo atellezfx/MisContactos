@@ -16,6 +16,9 @@
         tools:layout="@layout/fragment_crear_contacto"
         android:layout_above="@+id/barraMenu" />
 
+    <!--TODO: Por el momento dejamos pendiente el layout de lista_contactos, pues fue-->
+    <!--eliminado al cambiar a ListFragment-->
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/ab_solid_agenda"
+        android:background="@color/color_fondo"
         android:columnCount="5"
         android:rowCount="1"
         android:paddingTop="4dp">
@@ -48,9 +51,9 @@
                 android:id="@+id/btn_eliminar_contactos"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_discard"
+                android:src="@drawable/ic_menu_delete"
                 android:scaleType="fitCenter"
-                android:background="@drawable/ab_solid_agenda" />
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:text="@string/label_btn_remove_contact"
@@ -72,9 +75,9 @@
                 android:id="@+id/btn_sincronizar"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_refresh"
+                android:src="@drawable/ic_menu_sinchronize"
                 android:scaleType="fitCenter"
-                android:background="@drawable/ab_solid_agenda" />
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:text="@string/label_btn_sync_contacts"

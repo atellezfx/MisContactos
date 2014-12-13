@@ -141,8 +141,8 @@ public class ListaContactosFragment extends ListFragment
 
     @Override
     public void contactoEliminado(Intent intent, final ActionMode actionMode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setIcon(R.drawable.ic_action_warning);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder.setIcon(R.drawable.ic_menu_warning);
         builder.setTitle(i18n(R.string.title_alertdialog_confirm));
         builder.setMessage(i18n(R.string.mesg_confirm_delete));
         builder.setPositiveButton(i18n(R.string.mesg_positive_dialog_option), new DialogInterface.OnClickListener() {
